@@ -33,6 +33,9 @@ When you're ready, run:
 npm run reset-project
 ```
 
+![Doctor Use Case](./images/Doctor_use_case.png)
+![Patient Use Case](./images/Patient_use_case.png)
+
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
 ## Learn more
