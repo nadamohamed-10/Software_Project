@@ -1,5 +1,6 @@
 {
   "expo": {
+<<<<<<< HEAD
     "name": "SWE_Project",
     "slug": "SWE_Project",
     "version": "1.0.0",
@@ -46,3 +47,27 @@
     }
   }
 }
+=======
+    "name": "Clinic App",
+    "slug": "clinic-app",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTabletMode": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF"
+      }
+    }
+  }
+}
+
+
+
+
+
+
+>>>>>>> 3acec29a83f49cf7cb548f011d29e0363905507f
