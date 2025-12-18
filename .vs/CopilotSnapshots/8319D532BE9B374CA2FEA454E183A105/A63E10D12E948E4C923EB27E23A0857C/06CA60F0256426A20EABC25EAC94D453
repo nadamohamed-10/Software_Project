@@ -1,0 +1,71 @@
+﻿namespace CLINICSYSTEM.Data.DTOs
+{
+    public class DoctorProfileDTO
+    {
+        public int DoctorId { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Specialization { get; set; } = string.Empty;
+        public string? LicenseNumber { get; set; }
+    }
+
+    public class DayAppointmentDTO
+    {
+        public int AppointmentId { get; set; }
+        public string PatientName { get; set; } = string.Empty;
+        public DateTime AppointmentDate { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public string Status { get; set; } = string.Empty;
+        public string? ReasonForVisit { get; set; }
+    }
+
+    public class PatientSearchDTO
+    {
+        public int PatientId { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+    }
+
+    public class PatientRecordDetailDTO
+    {
+        public int PatientId { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public DateTime DateOfBirth { get; set; }
+        public string Gender { get; set; } = string.Empty;
+        public string? Allergies { get; set; }
+        public string? ChronicConditions { get; set; }
+        public string? CurrentMedications { get; set; }
+        public string? SurgicalHistory { get; set; }
+        public string? FamilyHistory { get; set; }
+    }
+
+    public class CreateDoctorScheduleDto
+    {
+        public string DayOfWeek { get; set; } = string.Empty;
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public int SlotDurationMinutes { get; set; } = 30;
+    }
+
+    public class CreateScheduleRequest
+    {
+        public string DayOfWeek { get; set; } = string.Empty;
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public int SlotDurationMinutes { get; set; } = 30;
+    }
+
+    public class DoctorScheduleDTO
+    {
+        public int ScheduleId { get; set; }
+        public string DayOfWeek { get; set; } = string.Empty;
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public int SlotDurationMinutes { get; set; }
+    }
+}

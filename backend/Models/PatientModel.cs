@@ -2,14 +2,19 @@
 {
     public class PatientModel
     {
-        public int patient_ID { get; set; }
-        public int user_ID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Gender { get; set; }
-        public string Address { get; set; }
-        public string? Emergency_contact { get; set; }
-        public DateTime Date_Of_Birth { get; set; }
+        public int PatientId { get; set; }
+        public int UserId { get; set; }
+        public string Gender { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string? EmergencyContact { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
+        // Navigation properties
+        public UserModel? User { get; set; }
+        public ICollection<AppointmentModel>? Appointments { get; set; }
+        public ICollection<MedicalRecordModel>? MedicalRecords { get; set; }
+        public ICollection<MedicalImageModel>? MedicalImages { get; set; }
     }
 }
