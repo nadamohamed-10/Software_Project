@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,6 +7,7 @@ using System.Text;
 using CLINICSYSTEM.Data;
 using CLINICSYSTEM.Data.DTOs;
 using CLINICSYSTEM.Models;
+using CLINICSYSTEM.Helpers;
 
 namespace CLINICSYSTEM.Services
 {
@@ -15,36 +17,66 @@ namespace CLINICSYSTEM.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ClinicDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthenticationService> _logger;
 
-        public AuthenticationService(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, 
-            ClinicDbContext context, IConfiguration configuration)
+        public AuthenticationService(
+            UserManager<IdentityUser> userManager, 
+            RoleManager<IdentityRole> roleManager, 
+            ClinicDbContext context, 
+            IConfiguration configuration,
+            ILogger<AuthenticationService> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
         {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            
             try
             {
+                // Check if email already exists
                 if (await IsEmailExistsAsync(request.Email))
+                {
+                    _logger.LogWarning("Registration failed: Email {Email} already exists", request.Email);
                     return new AuthResponse { Success = false, Message = "Email already exists" };
+                }
 
+                // Ensure roles exist
+                await EnsureRolesExistAsync();
+
+                // Create Identity user
                 var identityUser = new IdentityUser 
                 { 
                     UserName = request.Email, 
-                    Email = request.Email 
+                    Email = request.Email,
+                    EmailConfirmed = true
                 };
 
-                var result = await _userManager.CreateAsync(identityUser, request.Password);
+                var identityResult = await _userManager.CreateAsync(identityUser, request.Password);
                 
-                if (!result.Succeeded)
-                    return new AuthResponse { Success = false, Message = "Registration failed" };
+                if (!identityResult.Succeeded)
+                {
+                    var errors = string.Join(", ", identityResult.Errors.Select(e => e.Description));
+                    _logger.LogError("Identity user creation failed: {Errors}", errors);
+                    return new AuthResponse { Success = false, Message = $"Registration failed: {errors}" };
+                }
 
-                await _userManager.AddToRoleAsync(identityUser, request.Role);
+                // Add role
+                var roleResult = await _userManager.AddToRoleAsync(identityUser, request.Role);
+                if (!roleResult.Succeeded)
+                {
+                    var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                    _logger.LogError("Role assignment failed: {Errors}", errors);
+                    await _userManager.DeleteAsync(identityUser);
+                    return new AuthResponse { Success = false, Message = $"Role assignment failed: {errors}" };
+                }
 
+                // Create custom user
                 var user = new UserModel
                 {
                     Email = request.Email,
@@ -59,33 +91,25 @@ namespace CLINICSYSTEM.Services
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
+                _logger.LogInformation("User created with UserId: {UserId}", user.UserId);
+
+                // Create role-specific profile
                 if (request.Role == "Patient")
                 {
-                    var patient = new PatientModel
-                    {
-                        UserId = user.UserId,
-                        Gender = request.Gender ?? string.Empty,
-                        DateOfBirth = request.DateOfBirth ?? DateTime.MinValue,
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
-                    };
-                    _context.Patients.Add(patient);
+                    await CreatePatientProfileAsync(user.UserId, request);
                 }
                 else if (request.Role == "Doctor")
                 {
-                    var doctor = new DoctorModel
-                    {
-                        UserId = user.UserId,
-                        Specialization = request.Specialization ?? "Orthopedic Specialist",
-                        CreatedAt = DateTime.UtcNow,
-                        UpdatedAt = DateTime.UtcNow
-                    };
-                    _context.Doctors.Add(doctor);
+                    await CreateDoctorProfileAsync(user.UserId);
                 }
 
                 await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
 
                 var token = GenerateToken(user);
+
+                _logger.LogInformation("User {Email} registered successfully as {Role} with UserId {UserId}", 
+                    request.Email, request.Role, user.UserId);
 
                 return new AuthResponse
                 {
@@ -99,12 +123,97 @@ namespace CLINICSYSTEM.Services
                         LastName = user.LastName,
                         PhoneNumber = user.PhoneNumber,
                         Role = user.Role
-                    }
+                    },
+                    Message = "Registration successful"
                 };
             }
             catch (Exception ex)
             {
-                return new AuthResponse { Success = false, Message = $"Error: {ex.Message}" };
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, "Registration failed for email {Email}", request.Email);
+                return new AuthResponse { Success = false, Message = $"Registration failed: {ex.Message}" };
+            }
+        }
+
+        private async Task CreatePatientProfileAsync(int userId, RegisterRequest request)
+        {
+            try
+            {
+                // Parse date of birth with better error handling
+                DateTime dateOfBirth = new DateTime(1900, 1, 1); // Default safe date
+                
+                if (!string.IsNullOrWhiteSpace(request.DateOfBirth))
+                {
+                    var parsedDate = DateTimeHelper.ParseFlexibleDate(request.DateOfBirth);
+                    if (parsedDate.HasValue)
+                    {
+                        dateOfBirth = parsedDate.Value;
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Invalid date of birth format: {DateOfBirth}, using default date", request.DateOfBirth);
+                    }
+                }
+
+                var patient = new PatientModel
+                {
+                    UserId = userId,
+                    Gender = request.Gender ?? "Not Specified",
+                    DateOfBirth = dateOfBirth,
+                    Address = string.Empty,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                _context.Patients.Add(patient);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Patient profile created for UserId: {UserId}, PatientId: {PatientId}", 
+                    userId, patient.PatientId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create patient profile for UserId: {UserId}", userId);
+                throw;
+            }
+        }
+
+        private async Task CreateDoctorProfileAsync(int userId)
+        {
+            try
+            {
+                var doctor = new DoctorModel
+                {
+                    UserId = userId,
+                    Specialization = "General",
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+                _context.Doctors.Add(doctor);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Doctor profile created for UserId: {UserId}, DoctorId: {DoctorId}", 
+                    userId, doctor.DoctorId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create doctor profile for UserId: {UserId}", userId);
+                throw;
+            }
+        }
+
+        private async Task EnsureRolesExistAsync()
+        {
+            var roles = new[] { "Doctor", "Patient", "Admin" };
+            
+            foreach (var roleName in roles)
+            {
+                if (!await _roleManager.RoleExistsAsync(roleName))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(roleName));
+                    _logger.LogInformation("Created role: {RoleName}", roleName);
+                }
             }
         }
 
@@ -112,16 +221,31 @@ namespace CLINICSYSTEM.Services
         {
             try
             {
-                var user = _context.Users.FirstOrDefault(u => u.Email == request.Email);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
                 
                 if (user == null)
+                {
+                    _logger.LogWarning("Login failed: User {Email} not found", request.Email);
                     return new AuthResponse { Success = false, Message = "Invalid email or password" };
+                }
 
                 var identityUser = await _userManager.FindByEmailAsync(request.Email);
-                if (identityUser == null || !await _userManager.CheckPasswordAsync(identityUser, request.Password))
+                if (identityUser == null)
+                {
+                    _logger.LogWarning("Login failed: Identity user {Email} not found", request.Email);
                     return new AuthResponse { Success = false, Message = "Invalid email or password" };
+                }
+
+                var isPasswordValid = await _userManager.CheckPasswordAsync(identityUser, request.Password);
+                if (!isPasswordValid)
+                {
+                    _logger.LogWarning("Login failed: Invalid password for {Email}", request.Email);
+                    return new AuthResponse { Success = false, Message = "Invalid email or password" };
+                }
 
                 var token = GenerateToken(user);
+
+                _logger.LogInformation("User {Email} (UserId: {UserId}) logged in successfully", request.Email, user.UserId);
 
                 return new AuthResponse
                 {
@@ -135,43 +259,71 @@ namespace CLINICSYSTEM.Services
                         LastName = user.LastName,
                         PhoneNumber = user.PhoneNumber,
                         Role = user.Role
-                    }
+                    },
+                    Message = "Login successful"
                 };
             }
             catch (Exception ex)
             {
-                return new AuthResponse { Success = false, Message = $"Error: {ex.Message}" };
+                _logger.LogError(ex, "Login failed for email {Email}", request.Email);
+                return new AuthResponse { Success = false, Message = "Login failed. Please try again." };
             }
         }
 
         public async Task<bool> IsEmailExistsAsync(string email)
         {
-            return await _userManager.FindByEmailAsync(email) != null;
+            try
+            {
+                return await _userManager.FindByEmailAsync(email) != null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error checking if email {Email} exists", email);
+                return false;
+            }
         }
 
         private string GenerateToken(UserModel user)
         {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["SecretKey"] ?? ""));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
+            try
             {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
+                var jwtSettings = _configuration.GetSection("JwtSettings");
+                var secretKey = jwtSettings["SecretKey"];
+                
+                if (string.IsNullOrEmpty(secretKey))
+                {
+                    throw new InvalidOperationException("JWT SecretKey is not configured");
+                }
 
-            var token = new JwtSecurityToken(
-                issuer: jwtSettings["Issuer"],
-                audience: jwtSettings["Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(int.Parse(jwtSettings["ExpirationMinutes"] ?? "1440")),
-                signingCredentials: credentials
-            );
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+                var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
+
+                var expirationMinutes = int.Parse(jwtSettings["ExpirationMinutes"] ?? "1440");
+                
+                var token = new JwtSecurityToken(
+                    issuer: jwtSettings["Issuer"],
+                    audience: jwtSettings["Audience"],
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(expirationMinutes),
+                    signingCredentials: credentials
+                );
+
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Token generation failed for user {UserId}", user.UserId);
+                throw;
+            }
         }
     }
 }

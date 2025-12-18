@@ -11,6 +11,25 @@ namespace CLINICSYSTEM.Data.DTOs
         public string? LicenseNumber { get; set; }
     }
 
+    public class DoctorListDTO
+    {
+        public int DoctorId { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Specialization { get; set; } = string.Empty;
+    }
+
+    public class UpdateDoctorProfileRequest
+    {
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Specialization { get; set; } = string.Empty;
+        public string? LicenseNumber { get; set; }
+    }
+
     public class DayAppointmentDTO
     {
         public int AppointmentId { get; set; }
@@ -44,20 +63,16 @@ namespace CLINICSYSTEM.Data.DTOs
         public string? FamilyHistory { get; set; }
     }
 
-    public class CreateDoctorScheduleDto
-    {
-        public string DayOfWeek { get; set; } = string.Empty;
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
-        public int SlotDurationMinutes { get; set; } = 30;
-    }
-
     public class CreateScheduleRequest
     {
         public string DayOfWeek { get; set; } = string.Empty;
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+        public string StartTime { get; set; } = string.Empty; // "09:00" format from Postman
+        public string EndTime { get; set; } = string.Empty;   // "17:00" format from Postman
         public int SlotDurationMinutes { get; set; } = 30;
+
+        // Helper properties to convert string to TimeSpan
+        public TimeSpan StartTimeSpan => TimeSpan.TryParse(StartTime, out var start) ? start : TimeSpan.Zero;
+        public TimeSpan EndTimeSpan => TimeSpan.TryParse(EndTime, out var end) ? end : TimeSpan.Zero;
     }
 
     public class DoctorScheduleDTO

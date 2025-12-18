@@ -132,45 +132,50 @@ namespace CLINICSYSTEM.Services
 
         public async Task<List<AppointmentDTO>> GetPatientAppointmentsAsync(int patientId)
         {
-            return await _context.Appointments
+            // FIXED: Load data first, then do string concatenation in memory
+            var appointments = await _context.Appointments
                 .Include(a => a.Doctor)
                     .ThenInclude(d => d.User)
                 .Include(a => a.TimeSlot)
                 .Where(a => a.PatientId == patientId)
                 .OrderByDescending(a => a.TimeSlot.SlotDate)
-                .Select(a => new AppointmentDTO
-                {
-                    AppointmentId = a.AppointmentId,
-                    DoctorName = a.Doctor.User.FirstName + " " + a.Doctor.User.LastName,
-                    PatientName = "",
-                    AppointmentDate = a.TimeSlot.SlotDate,
-                    StartTime = a.TimeSlot.StartTime,
-                    EndTime = a.TimeSlot.EndTime,
-                    Status = a.Status,
-                    ReasonForVisit = a.ReasonForVisit
-                })
                 .ToListAsync();
+
+            return appointments.Select(a => new AppointmentDTO
+            {
+                AppointmentId = a.AppointmentId,
+                DoctorName = $"{a.Doctor.User.FirstName} {a.Doctor.User.LastName}", // String concat in memory
+                PatientName = "",
+                AppointmentDate = a.TimeSlot.SlotDate,
+                StartTime = a.TimeSlot.StartTime,
+                EndTime = a.TimeSlot.EndTime,
+                Status = a.Status,
+                ReasonForVisit = a.ReasonForVisit
+            }).ToList();
         }
 
         public async Task<AppointmentDTO?> GetAppointmentDetailsAsync(int appointmentId)
         {
-            return await _context.Appointments
+            // FIXED: Load data first, then do string concatenation in memory
+            var appointment = await _context.Appointments
                 .Include(a => a.Doctor)
                     .ThenInclude(d => d.User)
                 .Include(a => a.TimeSlot)
-                .Where(a => a.AppointmentId == appointmentId)
-                .Select(a => new AppointmentDTO
-                {
-                    AppointmentId = a.AppointmentId,
-                    DoctorName = a.Doctor.User.FirstName + " " + a.Doctor.User.LastName,
-                    PatientName = "",
-                    AppointmentDate = a.TimeSlot.SlotDate,
-                    StartTime = a.TimeSlot.StartTime,
-                    EndTime = a.TimeSlot.EndTime,
-                    Status = a.Status,
-                    ReasonForVisit = a.ReasonForVisit
-                })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(a => a.AppointmentId == appointmentId);
+
+            if (appointment == null) return null;
+
+            return new AppointmentDTO
+            {
+                AppointmentId = appointment.AppointmentId,
+                DoctorName = $"{appointment.Doctor.User.FirstName} {appointment.Doctor.User.LastName}", // String concat in memory
+                PatientName = "",
+                AppointmentDate = appointment.TimeSlot.SlotDate,
+                StartTime = appointment.TimeSlot.StartTime,
+                EndTime = appointment.TimeSlot.EndTime,
+                Status = appointment.Status,
+                ReasonForVisit = appointment.ReasonForVisit
+            };
         }
     }
 }

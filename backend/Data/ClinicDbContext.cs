@@ -26,6 +26,40 @@ namespace CLINICSYSTEM.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configure primary keys explicitly
+            modelBuilder.Entity<UserModel>()
+                .HasKey(u => u.UserId);
+                
+            modelBuilder.Entity<PatientModel>()
+                .HasKey(p => p.PatientId);
+                
+            modelBuilder.Entity<DoctorModel>()
+                .HasKey(d => d.DoctorId);
+                
+            modelBuilder.Entity<AppointmentModel>()
+                .HasKey(a => a.AppointmentId);
+                
+            modelBuilder.Entity<TimeSlotModel>()
+                .HasKey(ts => ts.TimeSlotId);
+                
+            modelBuilder.Entity<DoctorSchedule>()
+                .HasKey(ds => ds.ScheduleId);
+                
+            modelBuilder.Entity<ConsultationModel>()
+                .HasKey(c => c.ConsultationId);
+                
+            modelBuilder.Entity<PrescriptionModel>()
+                .HasKey(p => p.PrescriptionId);
+                
+            modelBuilder.Entity<MedicalRecordModel>()
+                .HasKey(mr => mr.RecordId);
+                
+            modelBuilder.Entity<MedicalImageModel>()
+                .HasKey(mi => mi.ImageId);
+                
+            modelBuilder.Entity<NotificationModel>()
+                .HasKey(n => n.NotificationId);
+
             // User relationships
             modelBuilder.Entity<PatientModel>()
                 .HasOne(p => p.User)

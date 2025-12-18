@@ -4,7 +4,10 @@ namespace CLINICSYSTEM.Services
 {
     public interface IDoctorService
     {
-        Task<DoctorProfileDTO?> GetProfileAsync(int doctorId);
+        Task<int?> GetDoctorIdByUserIdAsync(int userId);
+        Task<List<DoctorListDTO>> GetAllDoctorsAsync();
+        Task<DoctorProfileDTO?> GetProfileAsync(int userId);
+        Task<bool> UpdateProfileAsync(int userId, UpdateDoctorProfileRequest request);
         Task<List<DayAppointmentDTO>> GetTodayAppointmentsAsync(int doctorId);
         Task<List<DayAppointmentDTO>> GetAppointmentsAsync(int doctorId, DateTime date);
         Task<PatientRecordDetailDTO?> GetPatientRecordAsync(int patientId);
