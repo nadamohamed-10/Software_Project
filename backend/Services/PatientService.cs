@@ -14,11 +14,11 @@ namespace CLINICSYSTEM.Services
             _context = context;
         }
 
-        public async Task<PatientProfileDTO?> GetProfileAsync(int patientId)
+        public async Task<PatientProfileDTO?> GetProfileAsync(int userId)
         {
             var patient = await _context.Patients
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(p => p.PatientId == patientId);
+                .FirstOrDefaultAsync(p => p.UserId == userId);
 
             if (patient?.User == null) return null;
 
@@ -36,11 +36,17 @@ namespace CLINICSYSTEM.Services
             };
         }
 
-        public async Task<bool> UpdateProfileAsync(int patientId, UpdatePatientProfileRequest request)
+        private async Task<int?> GetPatientIdByUserIdAsync(int userId)
+        {
+            var patient = await _context.Patients.FirstOrDefaultAsync(p => p.UserId == userId);
+            return patient?.PatientId;
+        }
+
+        public async Task<bool> UpdateProfileAsync(int userId, UpdatePatientProfileRequest request)
         {
             var patient = await _context.Patients
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(p => p.PatientId == patientId);
+                .FirstOrDefaultAsync(p => p.UserId == userId);
 
             if (patient == null) return false;
 
@@ -62,8 +68,11 @@ namespace CLINICSYSTEM.Services
             return true;
         }
 
-        public async Task<MedicalHistoryDTO?> GetMedicalHistoryAsync(int patientId)
+        public async Task<MedicalHistoryDTO?> GetMedicalHistoryAsync(int userId)
         {
+            var patientId = await GetPatientIdByUserIdAsync(userId);
+            if (patientId == null) return null;
+
             var record = await _context.MedicalRecords
                 .Where(r => r.PatientId == patientId)
                 .OrderByDescending(r => r.LastUpdated)
@@ -81,8 +90,11 @@ namespace CLINICSYSTEM.Services
             };
         }
 
-        public async Task<bool> UpdateMedicalHistoryAsync(int patientId, UpdateMedicalHistoryRequest request)
+        public async Task<bool> UpdateMedicalHistoryAsync(int userId, UpdateMedicalHistoryRequest request)
         {
+            var patientId = await GetPatientIdByUserIdAsync(userId);
+            if (patientId == null) return false;
+
             var record = await _context.MedicalRecords
                 .FirstOrDefaultAsync(r => r.PatientId == patientId);
 
@@ -90,7 +102,7 @@ namespace CLINICSYSTEM.Services
             {
                 record = new MedicalRecordModel
                 {
-                    PatientId = patientId,
+                    PatientId = patientId.Value,
                     LastUpdated = DateTime.UtcNow
                 };
                 _context.MedicalRecords.Add(record);
@@ -110,30 +122,37 @@ namespace CLINICSYSTEM.Services
             return true;
         }
 
-        public async Task<List<AppointmentDTO>> GetAppointmentsAsync(int patientId)
+        public async Task<List<AppointmentDTO>> GetAppointmentsAsync(int userId)
         {
-            return await _context.Appointments
+            var patientId = await GetPatientIdByUserIdAsync(userId);
+            if (patientId == null) return new List<AppointmentDTO>();
+
+            var appointments = await _context.Appointments
                 .Include(a => a.Doctor)
                     .ThenInclude(d => d.User)
                 .Include(a => a.TimeSlot)
                 .Where(a => a.PatientId == patientId)
                 .OrderByDescending(a => a.TimeSlot.SlotDate)
-                .Select(a => new AppointmentDTO
-                {
-                    AppointmentId = a.AppointmentId,
-                    DoctorName = a.Doctor.User.FirstName + " " + a.Doctor.User.LastName,
-                    PatientName = "",
-                    AppointmentDate = a.TimeSlot.SlotDate,
-                    StartTime = a.TimeSlot.StartTime,
-                    EndTime = a.TimeSlot.EndTime,
-                    Status = a.Status,
-                    ReasonForVisit = a.ReasonForVisit
-                })
                 .ToListAsync();
+
+            return appointments.Select(a => new AppointmentDTO
+            {
+                AppointmentId = a.AppointmentId,
+                DoctorName = $"{a.Doctor.User.FirstName} {a.Doctor.User.LastName}",
+                PatientName = "",
+                AppointmentDate = a.TimeSlot.SlotDate,
+                StartTime = a.TimeSlot.StartTime,
+                EndTime = a.TimeSlot.EndTime,
+                Status = a.Status,
+                ReasonForVisit = a.ReasonForVisit
+            }).ToList();
         }
 
-        public async Task<List<PatientPrescriptionDTO>> GetPrescriptionsAsync(int patientId)
+        public async Task<List<PatientPrescriptionDTO>> GetPrescriptionsAsync(int userId)
         {
+            var patientId = await GetPatientIdByUserIdAsync(userId);
+            if (patientId == null) return new List<PatientPrescriptionDTO>();
+
             return await _context.Prescriptions
                 .Include(p => p.Consultation)
                     .ThenInclude(c => c.Appointment)
@@ -152,8 +171,11 @@ namespace CLINICSYSTEM.Services
                 .ToListAsync();
         }
 
-        public async Task<List<MedicalImageDTO>> GetMedicalImagesAsync(int patientId)
+        public async Task<List<MedicalImageDTO>> GetMedicalImagesAsync(int userId)
         {
+            var patientId = await GetPatientIdByUserIdAsync(userId);
+            if (patientId == null) return new List<MedicalImageDTO>();
+
             return await _context.MedicalImages
                 .Where(m => m.PatientId == patientId)
                 .OrderByDescending(m => m.DateUploaded)
@@ -169,8 +191,11 @@ namespace CLINICSYSTEM.Services
                 .ToListAsync();
         }
 
-        public async Task<PatientConsultationHistoryDTO?> GetConsultationHistoryAsync(int patientId)
+        public async Task<PatientConsultationHistoryDTO?> GetConsultationHistoryAsync(int userId)
         {
+            var patientId = await GetPatientIdByUserIdAsync(userId);
+            if (patientId == null) return null;
+
             var consultation = await _context.Consultations
                 .Include(c => c.Appointment)
                     .ThenInclude(a => a.Doctor)
@@ -185,7 +210,7 @@ namespace CLINICSYSTEM.Services
             {
                 ConsultationId = consultation.ConsultationId,
                 ConsultationDate = consultation.ConsultationDate,
-                DoctorName = consultation.Appointment.Doctor.User.FirstName + " " + consultation.Appointment.Doctor.User.LastName,
+                DoctorName = $"{consultation.Appointment.Doctor.User.FirstName} {consultation.Appointment.Doctor.User.LastName}",
                 Diagnosis = consultation.Diagnosis,
                 Notes = consultation.Notes
             };

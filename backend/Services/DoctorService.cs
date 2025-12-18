@@ -19,19 +19,41 @@ namespace CLINICSYSTEM.Services
             _logger = logger;
         }
 
-        public async Task<DoctorProfileDTO?> GetProfileAsync(int doctorId)
+        public async Task<int?> GetDoctorIdByUserIdAsync(int userId)
         {
-            var cacheKey = $"doctor_profile_{doctorId}";
+            var doctor = await _context.Doctors.FirstOrDefaultAsync(d => d.UserId == userId);
+            return doctor?.DoctorId;
+        }
+
+        public async Task<List<DoctorListDTO>> GetAllDoctorsAsync()
+        {
+            return await _context.Doctors
+                .Include(d => d.User)
+                .Select(d => new DoctorListDTO
+                {
+                    DoctorId = d.DoctorId,
+                    FirstName = d.User.FirstName,
+                    LastName = d.User.LastName,
+                    Specialization = d.Specialization,
+                    Email = d.User.Email,
+                    PhoneNumber = d.User.PhoneNumber
+                })
+                .ToListAsync();
+        }
+
+        public async Task<DoctorProfileDTO?> GetProfileAsync(int userId)
+        {
+            var cacheKey = $"doctor_profile_{userId}";
             
             if (_cache.TryGetValue(cacheKey, out DoctorProfileDTO? cachedProfile))
             {
-                _logger.LogInformation("Retrieved doctor profile from cache for DoctorId: {DoctorId}", doctorId);
+                _logger.LogInformation("Retrieved doctor profile from cache for UserId: {UserId}", userId);
                 return cachedProfile;
             }
 
             var doctor = await _context.Doctors
                 .Include(d => d.User)
-                .FirstOrDefaultAsync(d => d.DoctorId == doctorId);
+                .FirstOrDefaultAsync(d => d.UserId == userId);
 
             if (doctor?.User == null) return null;
 
@@ -47,9 +69,38 @@ namespace CLINICSYSTEM.Services
             };
 
             _cache.Set(cacheKey, profile, TimeSpan.FromMinutes(30));
-            _logger.LogInformation("Cached doctor profile for DoctorId: {DoctorId}", doctorId);
+            _logger.LogInformation("Cached doctor profile for UserId: {UserId}", userId);
 
             return profile;
+        }
+
+        public async Task<bool> UpdateProfileAsync(int userId, UpdateDoctorProfileRequest request)
+        {
+            var doctor = await _context.Doctors
+                .Include(d => d.User)
+                .FirstOrDefaultAsync(d => d.UserId == userId);
+
+            if (doctor == null) return false;
+
+            doctor.Specialization = request.Specialization;
+            doctor.LicenseNumber = request.LicenseNumber;
+            doctor.UpdatedAt = DateTime.UtcNow;
+
+            if (doctor.User != null)
+            {
+                doctor.User.FirstName = request.FirstName;
+                doctor.User.LastName = request.LastName;
+                doctor.User.PhoneNumber = request.PhoneNumber;
+                doctor.User.UpdatedAt = DateTime.UtcNow;
+            }
+
+            _context.Doctors.Update(doctor);
+            await _context.SaveChangesAsync();
+
+            // Clear cache
+            _cache.Remove($"doctor_profile_{userId}");
+
+            return true;
         }
 
         public async Task<List<DayAppointmentDTO>> GetTodayAppointmentsAsync(int doctorId)
@@ -143,24 +194,44 @@ namespace CLINICSYSTEM.Services
 
         public async Task<bool> CreateScheduleAsync(int doctorId, CreateScheduleRequest request)
         {
-            var schedule = new DoctorSchedule
+            try
             {
-                DoctorId = doctorId,
-                DayOfWeek = request.DayOfWeek,
-                StartTime = request.StartTime,
-                EndTime = request.EndTime,
-                SlotDurationMinutes = request.SlotDurationMinutes,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
+                // Check if schedule already exists for this doctor and day
+                var existingSchedule = await _context.DoctorSchedules
+                    .FirstOrDefaultAsync(ds => ds.DoctorId == doctorId && ds.DayOfWeek == request.DayOfWeek);
 
-            _context.DoctorSchedules.Add(schedule);
-            await _context.SaveChangesAsync();
+                if (existingSchedule != null)
+                {
+                    _logger.LogWarning("Schedule already exists for Doctor {DoctorId} on {DayOfWeek}", doctorId, request.DayOfWeek);
+                    return false; // Schedule already exists
+                }
 
-            // Generate time slots for this schedule
-            await GenerateTimeSlotsForScheduleAsync(schedule);
+                var schedule = new DoctorSchedule
+                {
+                    DoctorId = doctorId,
+                    DayOfWeek = request.DayOfWeek,
+                    StartTime = request.StartTimeSpan,  // Use the converted TimeSpan
+                    EndTime = request.EndTimeSpan,      // Use the converted TimeSpan
+                    SlotDurationMinutes = request.SlotDurationMinutes,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
 
-            return true;
+                _context.DoctorSchedules.Add(schedule);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation("Schedule created for Doctor {DoctorId} on {DayOfWeek}", doctorId, request.DayOfWeek);
+
+                // Generate time slots for this schedule
+                await GenerateTimeSlotsForScheduleAsync(schedule);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating schedule for Doctor {DoctorId}", doctorId);
+                throw;
+            }
         }
 
         public async Task<List<DoctorScheduleDTO>> GetSchedulesAsync(int doctorId)

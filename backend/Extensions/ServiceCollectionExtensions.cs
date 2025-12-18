@@ -32,7 +32,13 @@ public static class ServiceCollectionExtensions
     {
         services.AddFluentValidationAutoValidation();
         services.AddFluentValidationClientsideAdapters();
+        
+        // Register all validators from the assembly
         services.AddValidatorsFromAssemblyContaining<RegisterDtoValidator>();
+        
+        // Explicitly register the RegisterRequest validator
+        services.AddScoped<IValidator<CLINICSYSTEM.Data.DTOs.RegisterRequest>, RegisterRequestValidator>();
+        services.AddScoped<IValidator<CLINICSYSTEM.Data.DTOs.LoginRequest>, LoginRequestValidator>();
 
         return services;
     }

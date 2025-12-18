@@ -12,102 +12,184 @@ namespace CLINICSYSTEM.Controllers
     public class PatientsController : ControllerBase
     {
         private readonly IPatientService _patientService;
+        private readonly ILogger<PatientsController> _logger;
 
-        public PatientsController(IPatientService patientService)
+        public PatientsController(IPatientService patientService, ILogger<PatientsController> logger)
         {
             _patientService = patientService;
+            _logger = logger;
         }
 
-        private int GetPatientId()
+        private int GetUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            return userIdClaim != null && int.TryParse(userIdClaim.Value, out var id) ? id : 0;
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var id))
+            {
+                return id;
+            }
+            return 0;
         }
 
         [HttpGet("profile")]
         public async Task<IActionResult> GetProfile()
         {
-            var userId = GetPatientId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                if (userId == 0)
+                {
+                    _logger.LogWarning("Unauthorized access attempt - no valid user ID in token");
+                    return Unauthorized(new { message = "Invalid authentication token" });
+                }
 
-            var profile = await _patientService.GetProfileAsync(userId);
-            if (profile == null) return NotFound();
+                var profile = await _patientService.GetProfileAsync(userId);
+                if (profile == null)
+                {
+                    _logger.LogWarning("Patient profile not found for UserId: {UserId}", userId);
+                    return NotFound(new { message = "Patient profile not found. Please complete registration." });
+                }
 
-            return Ok(profile);
+                return Ok(profile);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving patient profile");
+                return StatusCode(500, new { message = "An error occurred while retrieving profile" });
+            }
         }
 
         [HttpPut("profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdatePatientProfileRequest request)
         {
-            var userId = GetPatientId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
 
-            var result = await _patientService.UpdateProfileAsync(userId, request);
-            if (!result) return BadRequest("Failed to update profile");
+                var result = await _patientService.UpdateProfileAsync(userId, request);
+                if (!result)
+                {
+                    _logger.LogWarning("Failed to update profile for UserId: {UserId}", userId);
+                    return BadRequest(new { message = "Failed to update profile" });
+                }
 
-            return Ok(new { message = "Profile updated successfully" });
+                return Ok(new { message = "Profile updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating patient profile");
+                return StatusCode(500, new { message = "An error occurred while updating profile" });
+            }
         }
 
         [HttpGet("medical-history")]
         public async Task<IActionResult> GetMedicalHistory()
         {
-            var userId = GetPatientId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
 
-            var history = await _patientService.GetMedicalHistoryAsync(userId);
-            return Ok(history ?? new MedicalHistoryDTO());
+                var history = await _patientService.GetMedicalHistoryAsync(userId);
+                return Ok(history ?? new MedicalHistoryDTO());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving medical history");
+                return StatusCode(500, new { message = "An error occurred while retrieving medical history" });
+            }
         }
 
         [HttpPut("medical-history")]
         public async Task<IActionResult> UpdateMedicalHistory([FromBody] UpdateMedicalHistoryRequest request)
         {
-            var userId = GetPatientId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
 
-            var result = await _patientService.UpdateMedicalHistoryAsync(userId, request);
-            if (!result) return BadRequest("Failed to update medical history");
+                var result = await _patientService.UpdateMedicalHistoryAsync(userId, request);
+                if (!result) return BadRequest(new { message = "Failed to update medical history" });
 
-            return Ok(new { message = "Medical history updated successfully" });
+                return Ok(new { message = "Medical history updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating medical history");
+                return StatusCode(500, new { message = "An error occurred while updating medical history" });
+            }
         }
 
         [HttpGet("appointments")]
         public async Task<IActionResult> GetAppointments()
         {
-            var userId = GetPatientId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
 
-            var appointments = await _patientService.GetAppointmentsAsync(userId);
-            return Ok(appointments);
+                var appointments = await _patientService.GetAppointmentsAsync(userId);
+                return Ok(appointments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving appointments");
+                return StatusCode(500, new { message = "An error occurred while retrieving appointments" });
+            }
         }
 
         [HttpGet("prescriptions")]
         public async Task<IActionResult> GetPrescriptions()
         {
-            var userId = GetPatientId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
 
-            var prescriptions = await _patientService.GetPrescriptionsAsync(userId);
-            return Ok(prescriptions);
+                var prescriptions = await _patientService.GetPrescriptionsAsync(userId);
+                return Ok(prescriptions);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving prescriptions");
+                return StatusCode(500, new { message = "An error occurred while retrieving prescriptions" });
+            }
         }
 
         [HttpGet("medical-images")]
         public async Task<IActionResult> GetMedicalImages()
         {
-            var userId = GetPatientId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
 
-            var images = await _patientService.GetMedicalImagesAsync(userId);
-            return Ok(images);
+                var images = await _patientService.GetMedicalImagesAsync(userId);
+                return Ok(images);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving medical images");
+                return StatusCode(500, new { message = "An error occurred while retrieving medical images" });
+            }
         }
 
         [HttpGet("consultation-history")]
         public async Task<IActionResult> GetConsultationHistory()
         {
-            var userId = GetPatientId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
 
-            var history = await _patientService.GetConsultationHistoryAsync(userId);
-            return Ok(history);
+                var history = await _patientService.GetConsultationHistoryAsync(userId);
+                return Ok(history);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving consultation history");
+                return StatusCode(500, new { message = "An error occurred while retrieving consultation history" });
+            }
         }
     }
 }

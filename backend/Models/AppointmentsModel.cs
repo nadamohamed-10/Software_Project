@@ -1,7 +1,10 @@
-﻿namespace CLINICSYSTEM.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CLINICSYSTEM.Models
 {
     public class AppointmentModel
     {
+        [Key]
         public int AppointmentId { get; set; }
         public int DoctorId { get; set; }
         public int PatientId { get; set; }

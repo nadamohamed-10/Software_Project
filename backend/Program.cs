@@ -8,10 +8,12 @@ using CLINICSYSTEM.Data;
 using CLINICSYSTEM.Models;
 using CLINICSYSTEM.Services;
 using CLINICSYSTEM.Middleware;
-using CLINICSYSTEM.Extensions;
+using CLINICSYSTEM.Validators;
 using Serilog;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
@@ -32,6 +34,12 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
+// FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddScoped<IValidator<CLINICSYSTEM.Data.DTOs.RegisterRequest>, RegisterRequestValidator>();
+builder.Services.AddScoped<IValidator<CLINICSYSTEM.Data.DTOs.LoginRequest>, LoginRequestValidator>();
 
 // Swagger/OpenAPI
 builder.Services.AddSwaggerGen(c =>
@@ -66,45 +74,66 @@ builder.Services.AddSwaggerGen(c =>
             new string[] { }
         }
     });
-    
-    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    if (File.Exists(xmlPath))
-    {
-        c.IncludeXmlComments(xmlPath);
-    }
 });
 
 // Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? "Server=.;Database=ClinicSystemDb;Trusted_Connection=True;Encrypt=false;";
+?? "Data Source=ClinicSystemDb.db";
 builder.Services.AddDbContext<ClinicDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite(connectionString));
 
 // Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ClinicDbContext>()
     .AddDefaultTokenProviders();
 
-// JWT Authentication
+// JWT Authentication - FIXED CONFIGURATION
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var key = Encoding.ASCII.GetBytes(jwtSettings["SecretKey"] ?? "YourSuperSecretKeyThatIsAtLeast32CharactersLong!!");
+var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey not configured");
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
+    options.RequireHttpsMetadata = false; // Allow HTTP in development
+    options.SaveToken = true;
+    
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
+        ValidateIssuer = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidateAudience = true,
+        ValidAudience = jwtSettings["Audience"],
         ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
+        ClockSkew = TimeSpan.Zero,
+        RequireExpirationTime = true
+    };
+    
+    // Add event handlers for debugging
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            Log.Warning("JWT Authentication failed: {Message}", context.Exception.Message);
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            Log.Information("JWT Token validated successfully for user: {User}", 
+                context.Principal?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value);
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            Log.Warning("JWT Challenge triggered: {Error}", context.Error);
+            return Task.CompletedTask;
+        }
     };
 });
 
@@ -143,21 +172,21 @@ builder.Services.AddRateLimiter(options =>
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 });
 
-// Services
-builder.Services.AddRepositories();
-builder.Services.AddAutoMapperConfiguration();
-builder.Services.AddValidators();
-builder.Services.AddApplicationServices();
+// Application Services - Direct registration
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IConsultationService, ConsultationService>();
+builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
+builder.Services.AddScoped<IMedicalImageService, MedicalImageService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<PdfService>();
+
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
-
-// Ensure uploads directory exists
-var uploadsPath = Path.Combine(builder.Environment.WebRootPath ?? "wwwroot", "uploads", "medical-images");
-if (!Directory.Exists(uploadsPath))
-{
-    Directory.CreateDirectory(uploadsPath);
-    Log.Information("Created uploads directory: {Path}", uploadsPath);
-}
 
 // Configure the HTTP request pipeline
 app.UseExceptionHandler();

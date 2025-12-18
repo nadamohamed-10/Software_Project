@@ -28,9 +28,8 @@ namespace CLINICSYSTEM.Data.DTOs
         [RegularExpression("^(Doctor|Patient)$", ErrorMessage = "Role must be either 'Doctor' or 'Patient'")]
         public string Role { get; set; } = string.Empty;
 
-        public string? Specialization { get; set; }
         public string? Gender { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        public string? DateOfBirth { get; set; }
     }
 
     public class RegisterDto
@@ -42,9 +41,8 @@ namespace CLINICSYSTEM.Data.DTOs
         public string LastName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
-        public string? Specialization { get; set; }
         public string? Gender { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        public string? DateOfBirth { get; set; }
     }
 
     public class LoginRequest

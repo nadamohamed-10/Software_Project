@@ -1,4 +1,5 @@
 using CLINICSYSTEM.Constants;
+using System.Globalization;
 
 namespace CLINICSYSTEM.Helpers;
 
@@ -40,6 +41,41 @@ public static class DateTimeHelper
     {
         var egyptTimeZone = TimeZoneInfo.FindSystemTimeZoneById(AppConstants.DateTime.EgyptTimeZoneId);
         return TimeZoneInfo.ConvertTimeToUtc(egyptDateTime, egyptTimeZone);
+    }
+
+    /// <summary>
+    /// Parse date string with flexible formats
+    /// Supports formats: yyyy/MM/dd, dd/MM/yyyy, yyyy-MM-dd, dd-MM-yyyy
+    /// </summary>
+    public static DateTime? ParseFlexibleDate(string? dateString)
+    {
+        if (string.IsNullOrWhiteSpace(dateString))
+            return null;
+
+        var formats = new[]
+        {
+            "yyyy/MM/dd", "yyyy/M/d",
+            "dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy", "d/M/yyyy",
+            "yyyy-MM-dd", "yyyy-M-d",
+            "dd-MM-yyyy", "d-MM-yyyy", "dd-M-yyyy", "d-M-yyyy",
+            "MM/dd/yyyy", "M/dd/yyyy", "MM/d/yyyy", "M/d/yyyy"
+        };
+
+        foreach (var format in formats)
+        {
+            if (DateTime.TryParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+            {
+                return result;
+            }
+        }
+
+        // Fallback to standard parsing
+        if (DateTime.TryParse(dateString, out var fallbackResult))
+        {
+            return fallbackResult;
+        }
+
+        return null;
     }
 
     /// <summary>
