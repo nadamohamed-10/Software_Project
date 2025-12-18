@@ -194,12 +194,3 @@ For production, use environment variables:
 $env:ConnectionStrings__DefaultConnection="your-connection-string"
 $env:JwtSettings__SecretKey="your-secret-key"
 ```
-
-## Next Steps
-1. Configure production database
-2. Set up continuous integration/deployment
-3. Configure email/SMS for notifications
-4. Implement backup strategy
-5. Set up monitoring and alerting
-6. Load testing
-7. Security penetration testing
