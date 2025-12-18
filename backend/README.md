@@ -239,37 +239,9 @@ JwtSettings__SecretKey=<your-secret-key>
 ### Using PowerShell
 See **[API_TESTING.md](API_TESTING.md)** for sample PowerShell scripts.
 
-## 📈 Performance
-
-- Asynchronous operations throughout
-- Memory caching for frequently accessed data
-- Optimized database queries
-- Connection pooling enabled
-- Response compression ready
-
-## 🔧 Configuration
-
-### appsettings.json
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=.;Database=ClinicSystemDb;Trusted_Connection=True;Encrypt=false;"
-  },
-  "JwtSettings": {
-    "SecretKey": "YourSecretKey",
-    "ExpirationMinutes": 1440
-  }
-}
 
 
-## 🙏 Acknowledgments
-
-- ASP.NET Core Team
-- Entity Framework Core Team
-- QuestPDF Library
-- Serilog Community
+ 
 - Dr. Ahmed Nabil for medical consultation
-
----
 
 **Built with ❤️ for better healthcare management**
