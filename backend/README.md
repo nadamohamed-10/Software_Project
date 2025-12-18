@@ -260,61 +260,7 @@ See **[API_TESTING.md](API_TESTING.md)** for sample PowerShell scripts.
     "ExpirationMinutes": 1440
   }
 }
-```
 
-### Rate Limiting
-Configure in Program.cs:
-```csharp
-PermitLimit = 100,
-Window = TimeSpan.FromMinutes(1)
-```
-
-## 📝 Logging
-
-Logs are stored in `backend/logs/` directory:
-- Format: `clinic-api-YYYYMMDD.txt`
-- Rolling interval: Daily
-- Includes: Errors, warnings, information, and audit trails
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## 📄 License
-
-[Specify your license]
-
-## 👥 Team
-
-- Development Team: [Your team]
-- Medical Advisor: Dr. Ahmed Nabil (Orthopedic Specialist)
-
-## 📞 Support
-
-- Documentation: See documentation files in `backend/`
-- Issues: [Your issue tracker]
-- Email: [Your support email]
-
-## 🎯 Roadmap
-
-### Completed ✅
-- All core features implemented
-- Security hardening complete
-- Performance optimization done
-- Documentation complete
-
-### Future Enhancements
-- [ ] Email/SMS notifications
-- [ ] Payment gateway integration
-- [ ] Real-time updates with SignalR
-- [ ] Advanced reporting and analytics
-- [ ] DICOM support for medical imaging
-- [ ] Multi-language support
-- [ ] Mobile app push notifications
 
 ## 🙏 Acknowledgments
 
