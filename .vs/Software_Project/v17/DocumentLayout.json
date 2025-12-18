@@ -1,0 +1,581 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Software Project\\Software_Project\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\api_testing.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\api_testing.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\architecture.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\architecture.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\checklist.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\checklist.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\folder_structure.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\folder_structure.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\implementation_summary.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\implementation_summary.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\validators\\authvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\validators\\authvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\clinicsystem.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\clinicsystem.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\clinicdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\clinicdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\controllers\\appointmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\controllers\\appointmentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\models\\consultationmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\models\\consultationmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\models\\usermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\models\\usermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\repositories\\iunitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\repositories\\iunitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\repositories\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\repositories\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\validators\\appointmentvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\validators\\appointmentvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\validators\\consultationvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\validators\\consultationvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\validators\\doctorvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\validators\\doctorvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\validators\\medicalimagevalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\validators\\medicalimagevalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\validators\\notificationvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\validators\\notificationvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\validators\\patientvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\validators\\patientvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\validators\\prescriptionvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\validators\\prescriptionvalidators.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\dtos\\appointmentdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\dtos\\appointmentdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\dtos\\authdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\dtos\\authdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\dtos\\consultationdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\dtos\\consultationdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\dtos\\doctordtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\dtos\\doctordtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\dtos\\medicalimagedtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\dtos\\medicalimagedtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\dtos\\notificationdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\dtos\\notificationdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\dtos\\patientdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\dtos\\patientdtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|e:\\software project\\software_project\\backend\\data\\dtos\\prescriptiondtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{741DDD3A-2C0C-C57E-7857-330587FBEE1F}|backend\\CLINICSYSTEM.csproj|solutionrelative:backend\\data\\dtos\\prescriptiondtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\.gitignore",
+              "RelativeDocumentMoniker": "backend\\.gitignore",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\.gitignore",
+              "RelativeToolTip": "backend\\.gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-12-18T06:37:14.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FOLDER_STRUCTURE.md",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\FOLDER_STRUCTURE.md",
+              "RelativeDocumentMoniker": "backend\\FOLDER_STRUCTURE.md",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\FOLDER_STRUCTURE.md",
+              "RelativeToolTip": "backend\\FOLDER_STRUCTURE.md",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-12-18T06:36:55.096Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IMPLEMENTATION_SUMMARY.md",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\IMPLEMENTATION_SUMMARY.md",
+              "RelativeDocumentMoniker": "backend\\IMPLEMENTATION_SUMMARY.md",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\IMPLEMENTATION_SUMMARY.md",
+              "RelativeToolTip": "backend\\IMPLEMENTATION_SUMMARY.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-12-18T06:36:53.663Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MappingProfile.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Mappings\\MappingProfile.cs",
+              "RelativeDocumentMoniker": "backend\\Mappings\\MappingProfile.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Mappings\\MappingProfile.cs",
+              "RelativeToolTip": "backend\\Mappings\\MappingProfile.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAwCUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:32:43.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "ConsultationDTOs.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\ConsultationDTOs.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\DTOs\\ConsultationDTOs.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\ConsultationDTOs.cs",
+              "RelativeToolTip": "backend\\Data\\DTOs\\ConsultationDTOs.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAMBUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:25:26.776Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CHECKLIST.md",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\CHECKLIST.md",
+              "RelativeDocumentMoniker": "backend\\CHECKLIST.md",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\CHECKLIST.md",
+              "RelativeToolTip": "backend\\CHECKLIST.md",
+              "ViewState": "AgIAALoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-12-18T06:10:05.118Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ARCHITECTURE.md",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\ARCHITECTURE.md",
+              "RelativeDocumentMoniker": "backend\\ARCHITECTURE.md",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\ARCHITECTURE.md",
+              "RelativeToolTip": "backend\\ARCHITECTURE.md",
+              "ViewState": "AgIAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-12-18T06:10:09.56Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "API_TESTING.md",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\API_TESTING.md",
+              "RelativeDocumentMoniker": "backend\\API_TESTING.md",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\API_TESTING.md",
+              "RelativeToolTip": "backend\\API_TESTING.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2025-12-18T06:10:01.356Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "DoctorDTOs.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\DoctorDTOs.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\DTOs\\DoctorDTOs.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\DoctorDTOs.cs",
+              "RelativeToolTip": "backend\\Data\\DTOs\\DoctorDTOs.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAMBUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:25:45.928Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "MedicalImageDTOs.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\MedicalImageDTOs.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\DTOs\\MedicalImageDTOs.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\MedicalImageDTOs.cs",
+              "RelativeToolTip": "backend\\Data\\DTOs\\MedicalImageDTOs.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAMBUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:26:02.111Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "NotificationDTOs.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\NotificationDTOs.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\DTOs\\NotificationDTOs.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\NotificationDTOs.cs",
+              "RelativeToolTip": "backend\\Data\\DTOs\\NotificationDTOs.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAMBUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:26:16.41Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "AuthDTOs.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\AuthDTOs.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\DTOs\\AuthDTOs.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\AuthDTOs.cs",
+              "RelativeToolTip": "backend\\Data\\DTOs\\AuthDTOs.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAMBUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:25:10.524Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ClinicDbContext.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\ClinicDbContext.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\ClinicDbContext.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\ClinicDbContext.cs",
+              "RelativeToolTip": "backend\\Data\\ClinicDbContext.cs",
+              "ViewState": "AgIAAF4AAAAAAAAAAAD4v4EAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:12:21.044Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AuthValidators.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Validators\\AuthValidators.cs",
+              "RelativeDocumentMoniker": "backend\\Validators\\AuthValidators.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Validators\\AuthValidators.cs",
+              "RelativeToolTip": "backend\\Validators\\AuthValidators.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:18:33.759Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "PatientDTOs.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\PatientDTOs.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\DTOs\\PatientDTOs.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\PatientDTOs.cs",
+              "RelativeToolTip": "backend\\Data\\DTOs\\PatientDTOs.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAMBUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:26:34.995Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CLINICSYSTEM",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\CLINICSYSTEM.csproj",
+              "RelativeDocumentMoniker": "backend\\CLINICSYSTEM.csproj",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\CLINICSYSTEM.csproj",
+              "RelativeToolTip": "backend\\CLINICSYSTEM.csproj",
+              "ViewState": "AgIAACYAAAAAAAAAAAAYwC8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-18T06:11:19.857Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "PrescriptionDTOs.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\PrescriptionDTOs.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\DTOs\\PrescriptionDTOs.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\PrescriptionDTOs.cs",
+              "RelativeToolTip": "backend\\Data\\DTOs\\PrescriptionDTOs.cs",
+              "ViewState": "AgIAAFEAAAAAAAAAAMBUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:26:54.862Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\AuthController.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "backend\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:19:21.846Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "PrescriptionValidators.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Validators\\PrescriptionValidators.cs",
+              "RelativeDocumentMoniker": "backend\\Validators\\PrescriptionValidators.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Validators\\PrescriptionValidators.cs",
+              "RelativeToolTip": "backend\\Validators\\PrescriptionValidators.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAABBwDUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:19:41.303Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "AppointmentDTOs.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\AppointmentDTOs.cs",
+              "RelativeDocumentMoniker": "backend\\Data\\DTOs\\AppointmentDTOs.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Data\\DTOs\\AppointmentDTOs.cs",
+              "RelativeToolTip": "backend\\Data\\DTOs\\AppointmentDTOs.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAGBiwEwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:20:07.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AppointmentsController.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Controllers\\AppointmentsController.cs",
+              "RelativeDocumentMoniker": "backend\\Controllers\\AppointmentsController.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Controllers\\AppointmentsController.cs",
+              "RelativeToolTip": "backend\\Controllers\\AppointmentsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:19:15.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "PatientValidators.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Validators\\PatientValidators.cs",
+              "RelativeDocumentMoniker": "backend\\Validators\\PatientValidators.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Validators\\PatientValidators.cs",
+              "RelativeToolTip": "backend\\Validators\\PatientValidators.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAIBJwD4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:19:27.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "AppointmentValidators.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Validators\\AppointmentValidators.cs",
+              "RelativeDocumentMoniker": "backend\\Validators\\AppointmentValidators.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Validators\\AppointmentValidators.cs",
+              "RelativeToolTip": "backend\\Validators\\AppointmentValidators.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwC4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:18:20.291Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "ConsultationValidators.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Validators\\ConsultationValidators.cs",
+              "RelativeDocumentMoniker": "backend\\Validators\\ConsultationValidators.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Validators\\ConsultationValidators.cs",
+              "RelativeToolTip": "backend\\Validators\\ConsultationValidators.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAwDMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:18:46.77Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "DoctorValidators.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Validators\\DoctorValidators.cs",
+              "RelativeDocumentMoniker": "backend\\Validators\\DoctorValidators.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Validators\\DoctorValidators.cs",
+              "RelativeToolTip": "backend\\Validators\\DoctorValidators.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAABRwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:18:57.27Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "UnitOfWork.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Repositories\\UnitOfWork.cs",
+              "RelativeDocumentMoniker": "backend\\Repositories\\UnitOfWork.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Repositories\\UnitOfWork.cs",
+              "RelativeToolTip": "backend\\Repositories\\UnitOfWork.cs",
+              "ViewState": "AgIAAIgAAAAAAAAAAABBwIkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:18:06.712Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "IUnitOfWork.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Repositories\\IUnitOfWork.cs",
+              "RelativeDocumentMoniker": "backend\\Repositories\\IUnitOfWork.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Repositories\\IUnitOfWork.cs",
+              "RelativeToolTip": "backend\\Repositories\\IUnitOfWork.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAABBwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:17:45.575Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Program.cs",
+              "RelativeDocumentMoniker": "backend\\Program.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Program.cs",
+              "RelativeToolTip": "backend\\Program.cs",
+              "ViewState": "AgIAAMQAAAAAAAAAAAASwNsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:16:53.293Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "NotificationValidators.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Validators\\NotificationValidators.cs",
+              "RelativeDocumentMoniker": "backend\\Validators\\NotificationValidators.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Validators\\NotificationValidators.cs",
+              "RelativeToolTip": "backend\\Validators\\NotificationValidators.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwBkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:19:14.746Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "MedicalImageValidators.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Validators\\MedicalImageValidators.cs",
+              "RelativeDocumentMoniker": "backend\\Validators\\MedicalImageValidators.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Validators\\MedicalImageValidators.cs",
+              "RelativeToolTip": "backend\\Validators\\MedicalImageValidators.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwBgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:19:06.326Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "UserModel.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Models\\UserModel.cs",
+              "RelativeDocumentMoniker": "backend\\Models\\UserModel.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Models\\UserModel.cs",
+              "RelativeToolTip": "backend\\Models\\UserModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwBQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:14:00.385Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ConsultationModel.cs",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\Models\\ConsultationModel.cs",
+              "RelativeDocumentMoniker": "backend\\Models\\ConsultationModel.cs",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\Models\\ConsultationModel.cs",
+              "RelativeToolTip": "backend\\Models\\ConsultationModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwBYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-18T06:13:43.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\Software Project\\Software_Project\\backend\\appsettings.json",
+              "RelativeDocumentMoniker": "backend\\appsettings.json",
+              "ToolTip": "E:\\Software Project\\Software_Project\\backend\\appsettings.json",
+              "RelativeToolTip": "backend\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-18T06:10:07.309Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+﻿using AutoMapper;
+using CLINICSYSTEM.Data.DTOs;
+using CLINICSYSTEM.Models;
+using Microsoft.Azure.Documents;
+
+namespace CLINICSYSTEM.Mappings;
+
+/// <summary>
+/// AutoMapper profile for mapping between DTOs and Models
+/// </summary>
+public class MappingProfile : Profile
+{
+    public MappingProfile()
+    {
+        // User mappings
+        CreateMap<User, UserResponseDto>();
+        CreateMap<RegisterDto, User>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.NormalizedUserName, opt => opt.MapFrom(src => src.Email.ToUpper()))
+            .ForMember(dest => dest.NormalizedEmail, opt => opt.MapFrom(src => src.Email.ToUpper()));
+
+        // Patient mappings
+        CreateMap<Patient, PatientResponseDto>()
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.User.PhoneNumber));
+        
+        CreateMap<UpdatePatientProfileDto, Patient>();
+        CreateMap<UpdateMedicalHistoryDto, MedicalRecord>();
+
+        // Doctor mappings
+        CreateMap<Doctor, DoctorResponseDto>()
+            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.User.FullName))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+            .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.User.PhoneNumber));
+
+        CreateMap<UpdateDoctorProfileDto, Doctor>();
+
+        // Appointment mappings
+        CreateMap<Appointment, AppointmentResponseDto>()
+            .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Patient.User.FullName))
+            .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Doctor.User.FullName))
+            .ForMember(dest => dest.TimeSlotTime, opt => opt.MapFrom(src => src.TimeSlot.StartTime.ToString("HH:mm")));
+
+        CreateMap<CreateAppointmentDto, Appointment>();
+        CreateMap<RescheduleAppointmentDto, Appointment>()
+            .ForMember(dest => dest.AppointmentDate, opt => opt.MapFrom(src => src.NewAppointmentDate))
+            .ForMember(dest => dest.TimeSlotId, opt => opt.MapFrom(src => src.NewTimeSlotId));
+
+        // TimeSlot mappings
+        CreateMap<TimeSlot, TimeSlotResponseDto>();
+        CreateMap<CreateTimeSlotDto, TimeSlot>();
+
+        // DoctorSchedule mappings
+        CreateMap<DoctorSchedule, DoctorScheduleResponseDto>();
+        CreateMap<CreateDoctorScheduleDto, DoctorSchedule>();
+
+        // Consultation mappings
+        CreateMap<Consultation, ConsultationResponseDto>()
+            .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Appointment.Patient.User.FullName))
+            .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Appointment.Doctor.User.FullName));
+
+        CreateMap<CreateConsultationDto, Consultation>();
+        CreateMap<UpdateConsultationDto, Consultation>()
+            .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+        // Prescription mappings
+        CreateMap<Prescription, PrescriptionResponseDto>()
+            .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Consultation.Appointment.Patient.User.FullName))
+            .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.Consultation.Appointment.Doctor.User.FullName));
+
+        CreateMap<CreatePrescriptionDto, Prescription>();
+
+        // MedicalRecord mappings
+        CreateMap<MedicalRecord, MedicalRecordResponseDto>()
+            .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Patient.User.FullName));
+
+        // MedicalImage mappings
+        CreateMap<MedicalImage, MedicalImageResponseDto>()
+            .ForMember(dest => dest.PatientName, opt => opt.MapFrom(src => src.Patient.User.FullName));
+
+        CreateMap<UploadMedicalImageDto, MedicalImage>();
+
+        // Notification mappings
+        CreateMap<Notification, NotificationResponseDto>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FullName));
+
+        CreateMap<CreateNotificationDto, Notification>();
+    }
+}

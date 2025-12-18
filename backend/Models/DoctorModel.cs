@@ -2,13 +2,17 @@
 {
     public class DoctorModel
     {
-        public int Doctor_ID { get; set; }
-        public int user_ID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Specialization { get; set; }
+        public int DoctorId { get; set; }
+        public int UserId { get; set; }
+        public string Specialization { get; set; } = "Orthopedic Specialist";
+        public string? LicenseNumber { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
-
-
+        // Navigation properties
+        public UserModel? User { get; set; }
+        public ICollection<DoctorSchedule>? Schedules { get; set; }
+        public ICollection<AppointmentModel>? Appointments { get; set; }
+        public ICollection<ConsultationModel>? Consultations { get; set; }
     }
 }
