@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   test-backend-windows:
-    runs-on: windows-latest 
+    runs-on: windows-latest
     timeout-minutes: 10
     
     steps:
@@ -27,7 +27,7 @@ jobs:
         echo "PORT=3000" >> .env.test
     
     - name: Run database migrations
-      shell: pwsh  # Use PowerShell for better Windows compatibility
+      shell: pwsh
       run: |
         npm run migrate:up 2>$null
         if ($LASTEXITCODE -ne 0) {
@@ -49,7 +49,7 @@ jobs:
           npm start
         }
         
-        # Store the job ID in environment variable
+        
         echo "SERVER_JOB_ID=$($serverJob.Id)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
         
         # Wait for server to start
@@ -57,7 +57,7 @@ jobs:
         
         Write-Output "Testing server connection..."
         
-        # Try different health endpoints
+       
         $healthEndpoints = @(
           "http://localhost:3000/api/health",
           "http://localhost:3000/health",
@@ -132,9 +132,8 @@ jobs:
         # Install newman globally
         npm install -g newman
         
-        # Create Postman test collection
-        $postmanConfig = @'
-        {
+        
+        $postmanConfig = '{
           "info": { 
             "name": "Clinic API Tests", 
             "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" 
@@ -163,12 +162,11 @@ jobs:
               } 
             }
           ]
-        }
-'@
+        }'
         
         $postmanConfig | Out-File -FilePath "postman-tests.json" -Encoding UTF8
         
-        # Run newman tests
+       
         newman run postman-tests.json --reporters cli
         
         # Alternative: If newman fails, just continue
@@ -186,7 +184,6 @@ jobs:
           Remove-Job -Id $env:SERVER_JOB_ID -Force -ErrorAction SilentlyContinue
         }
         
-        # Also kill any node processes that might be running
         Get-Process -Name "node" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
         
         Write-Output "✅ CI/CD Pipeline completed!"
