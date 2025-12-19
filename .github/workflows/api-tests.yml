@@ -1,194 +1,83 @@
 name: Backend API Testing
+
 on: [push, pull_request]
 
 jobs:
-  test-backend-windows:
+  test-backend:
     runs-on: windows-latest
     timeout-minutes: 10
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
-    
+
     - name: Install dependencies
       run: npm ci
-    
+
     - name: Create test environment
+      shell: pwsh
       run: |
-        echo "DATABASE_URL=sqlite::memory:" > .env.test
-        echo "JWT_SECRET=test_jwt_secret_123" >> .env.test
-        echo "NODE_ENV=test" >> .env.test
-        echo "PORT=3000" >> .env.test
+        "DATABASE_URL=sqlite:test.db" | Out-File .env.test
+        "JWT_SECRET=test_secret" | Out-File .env.test -Append
+        "NODE_ENV=test" | Out-File .env.test -Append
+        "PORT=3000" | Out-File .env.test -Append
 
+    - name: Run database migrations
+      shell: pwsh
+      run: |
+        npm run migrate || npx sequelize-cli db:migrate
 
-
-
-        - name: Run database migrations
-          shell: pwsh
-          run: |
-           npm run migrate:up 2>$null
-           if ($LASTEXITCODE -ne 0) {
-             npm run db:migrate 2>$null
-          if ($LASTEXITCODE -ne 0) {
-             npx sequelize-cli db:migrate 2>$null
-               if ($LASTEXITCODE -ne 0) {
-                 Write-Output "No migrations found"
-           exit 0
-         }
-         }
-        }
-    
-    
     - name: Start backend server
       shell: pwsh
       run: |
-        # Start server in background
-        $serverJob = Start-Job -ScriptBlock {
-          cd $using:PWD
-          npm start
-        }
-        
-        
-        echo "SERVER_JOB_ID=$($serverJob.Id)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-        
-        # Wait for server to start
-        Start-Sleep -Seconds 15
-        
-        Write-Output "Testing server connection..."
-        
-       
-        $healthEndpoints = @(
-          "http://localhost:3000/api/health",
-          "http://localhost:3000/health",
-          "http://localhost:3000"
-        )
-        
-        foreach ($endpoint in $healthEndpoints) {
-          try {
-            $response = Invoke-WebRequest -Uri $endpoint -TimeoutSec 5 -ErrorAction Stop
-            Write-Output "✅ Server is responding at $endpoint"
-            break
-          } catch {
-            Write-Output "⚠ Could not reach $endpoint"
-          }
-        }
-    
-    - name: Run API tests with PowerShell
+        Start-Process npm "start"
+        Start-Sleep -Seconds 20
+
+    - name: Health check
       shell: pwsh
       run: |
-        Write-Output "Running API tests..."
-        
-        Write-Output "Test 1: Health endpoint"
-        try {
-          $response = Invoke-WebRequest -Uri "http://localhost:3000/api/health" -ErrorAction Stop
-          Write-Output "✅ Health check passed (Status: $($response.StatusCode))"
-        } catch {
-          Write-Output "⚠ Health check failed: $_"
-        }
-        
-        Write-Output "Test 2: Register endpoint"
-        $registerBody = @{
-          email = "test@example.com"
-          password = "test123"
-          firstName = "Test"
-          lastName = "User"
-          role = "Patient"
-        } | ConvertTo-Json
-        
-        try {
-          $response = Invoke-RestMethod -Uri "http://localhost:3000/api/auth/register" `
-            -Method Post `
-            -ContentType "application/json" `
-            -Body $registerBody `
-            -ErrorAction Stop
-          Write-Output "✅ Register test passed"
-        } catch {
-          Write-Output "⚠ Register test issue: $($_.Exception.Message)"
-        }
-        
-        Write-Output "Test 3: Login endpoint"
-        $loginBody = @{
-          email = "test@example.com"
-          password = "test123"
-        } | ConvertTo-Json
-        
-        try {
-          $response = Invoke-RestMethod -Uri "http://localhost:3000/api/auth/login" `
-            -Method Post `
-            -ContentType "application/json" `
-            -Body $loginBody `
-            -ErrorAction Stop
-          Write-Output "✅ Login test passed"
-        } catch {
-          Write-Output "⚠ Login test issue: $($_.Exception.Message)"
-        }
-        
-        Write-Output "🎯 All basic API tests completed!"
-    
-    - name: Run Postman tests on Windows
+        Invoke-WebRequest http://localhost:3000/api/health -ErrorAction Stop
+
+    - name: Test Register API
       shell: pwsh
       run: |
-        # Install newman globally
-        npm install -g newman
-        
-        
-        $postmanConfig = '{
-          "info": { 
-            "name": "Clinic API Tests", 
-            "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" 
-          },
-          "item": [
-            { 
-              "name": "Health Check", 
-              "request": { 
-                "method": "GET", 
-                "url": "http://localhost:3000/api/health" 
-              } 
-            },
-            { 
-              "name": "Register", 
-              "request": { 
-                "method": "POST", 
-                "header": [{ 
-                  "key": "Content-Type", 
-                  "value": "application/json" 
-                }], 
-                "body": { 
-                  "mode": "raw", 
-                  "raw": "{\"email\":\"test2@example.com\",\"password\":\"test123\",\"firstName\":\"Test\",\"lastName\":\"User\"}" 
-                }, 
-                "url": "http://localhost:3000/api/auth/register" 
-              } 
-            }
-          ]
-        }'
-        
-        $postmanConfig | Out-File -FilePath "postman-tests.json" -Encoding UTF8
-        
-       
-        newman run postman-tests.json --reporters cli
-        
-        # Alternative: If newman fails, just continue
-        if ($LASTEXITCODE -ne 0) {
-          Write-Output "Postman tests completed with some issues"
-        }
-    
+        $body = @{
+          email="ci@test.com"
+          password="test123"
+          firstName="CI"
+          lastName="User"
+        } | ConvertTo-Json
+
+        Invoke-RestMethod `
+          -Uri http://localhost:3000/api/auth/register `
+          -Method POST `
+          -ContentType application/json `
+          -Body $body `
+          -ErrorAction Stop
+
+    - name: Test Login API
+      shell: pwsh
+      run: |
+        $body = @{
+          email="ci@test.com"
+          password="test123"
+        } | ConvertTo-Json
+
+        Invoke-RestMethod `
+          -Uri http://localhost:3000/api/auth/login `
+          -Method POST `
+          -ContentType application/json `
+          -Body $body `
+          -ErrorAction Stop
+
     - name: Stop server
       if: always()
       shell: pwsh
       run: |
-        # Stop the server job
-        if ($env:SERVER_JOB_ID) {
-          Stop-Job -Id $env:SERVER_JOB_ID -ErrorAction SilentlyContinue
-          Remove-Job -Id $env:SERVER_JOB_ID -Force -ErrorAction SilentlyContinue
-        }
-        
-        Get-Process -Name "node" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-        
-        Write-Output "✅ CI/CD Pipeline completed!"
+        Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force
