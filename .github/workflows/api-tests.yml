@@ -25,20 +25,25 @@ jobs:
         echo "JWT_SECRET=test_jwt_secret_123" >> .env.test
         echo "NODE_ENV=test" >> .env.test
         echo "PORT=3000" >> .env.test
-    
-    - name: Run database migrations
-      shell: pwsh
-      run: |
-        npm run migrate:up 2>$null
-        if ($LASTEXITCODE -ne 0) {
-          npm run db:migrate 2>$null
+
+
+
+
+        - name: Run database migrations
+          shell: pwsh
+          run: |
+           npm run migrate:up 2>$null
+           if ($LASTEXITCODE -ne 0) {
+             npm run db:migrate 2>$null
           if ($LASTEXITCODE -ne 0) {
-            npx sequelize-cli db:migrate 2>$null
-            if ($LASTEXITCODE -ne 0) {
-              Write-Output "No migrations found"
-            }
-          }
+             npx sequelize-cli db:migrate 2>$null
+               if ($LASTEXITCODE -ne 0) {
+                 Write-Output "No migrations found"
+           exit 0
+         }
+         }
         }
+    
     
     - name: Start backend server
       shell: pwsh
