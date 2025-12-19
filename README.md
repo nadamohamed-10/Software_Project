@@ -1,6 +1,5 @@
 # Clinic Information System
 
-**Quick. Nutritious. Delicious.**  
 A full-stack clinic management system that enables patients to book and manage appointments, while doctors can manage their schedules, view consultations, access medical records, and provide comprehensive care through a dedicated dashboard.
 
 ---
