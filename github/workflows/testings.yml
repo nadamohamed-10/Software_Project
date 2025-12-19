@@ -1,0 +1,68 @@
+name: Real API Tests
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with: {node-version: '20'}
+    
+    - run: npm ci
+    
+    - name: Create your REAL Postman collection
+      run: |
+        # Paste your ENTIRE Postman JSON here
+        cat > real-tests.json << 'EOF'
+        {
+          "info": {
+            "_postman_id": "clinic-system-test-collection-fixed",
+            "name": "Clinic Management System - Fixed API Testing",
+            "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+          },
+          "item": [
+            {
+              "name": "Authentication",
+              "item": [
+                {
+                  "name": "Register Patient - Ahmed",
+                  "request": {
+                    "method": "POST",
+                    "header": [{"key": "Content-Type", "value": "application/json"}],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\"email\":\"ahmed.mohamed@gmail.com\",\"password\":\"AhmedPass123!\",\"firstName\":\"Ahmed\",\"lastName\":\"Mohamed\",\"phoneNumber\":\"01012345678\",\"role\":\"Patient\",\"gender\":\"Male\",\"dateOfBirth\":\"15/3/1995\"}"
+                    },
+                    "url": "http://localhost:3000/api/auth/register"
+                  }
+                }
+                # ADD MORE OF YOUR TESTS HERE
+              ]
+            }
+          ]
+        }
+        EOF
+    
+    - name: Start server
+      run: |
+        npm start &
+        echo "SERVER_PID=$!" >> $GITHUB_ENV
+        sleep 25  # Give time to start
+    
+    - name: Install and run Newman
+      run: |
+        npm install -g newman
+        
+        # Run YOUR actual tests
+        newman run real-tests.json \
+          --env-var "base_url=http://localhost:3000" \
+          --reporters cli
+        
+        if [ $? -eq 0 ]; then
+          echo "✅ ALL YOUR TESTS PASSED!"
+        else
+          echo "❌ TESTS FAILED!"
+          exit 1
+        fi
