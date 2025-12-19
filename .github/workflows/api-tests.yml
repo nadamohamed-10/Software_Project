@@ -24,17 +24,20 @@ jobs:
       shell: pwsh
       run: |
         "DATABASE_URL=sqlite::memory:" | Out-File .env.test -Encoding utf8
-        "JWT_SECRET=test_jwt_secret_123" | Out-File .env.test -Append -Encoding utf8
-        "NODE_ENV=test" | Out-File .env.test -Append -Encoding utf8
-        "PORT=3000" | Out-File .env.test -Append -Encoding utf8
+        "JWT_SECRET=test_jwt_secret_123" | Out-File .env.test -Append
+        "NODE_ENV=test" | Out-File .env.test -Append
+        "PORT=3000" | Out-File .env.test -Append
 
-    - name: Run database migrations
+    - name: Run database migrations (safe)
       shell: pwsh
       run: |
-        npm run migrate:up `
-        -or npm run db:migrate `
-        -or npx sequelize-cli db:migrate `
-        -or Write-Host "No migrations found"
+        $scripts = npm run | Out-String
+        if ($scripts -match "migrate") {
+          Write-Host "Running migrations..."
+          npm run migrate
+        } else {
+          Write-Host "No migration script found, skipping..."
+        }
 
     - name: Start backend server
       shell: pwsh
@@ -44,31 +47,32 @@ jobs:
         }
 
         Start-Sleep -Seconds 15
-        Write-Host "Testing server connection..."
+        Write-Host "Checking server..."
 
         try {
           Invoke-WebRequest http://localhost:3000/api/health -UseBasicParsing
+          Write-Host "Server is running"
         } catch {
-          Write-Host "Server still starting..."
+          Write-Host "Server did not respond yet"
         }
 
-    - name: Run API tests with curl
+    - name: Run API tests
       shell: pwsh
       run: |
         Write-Host "Running API tests..."
 
-        Write-Host "Test 1: Health endpoint"
-        curl http://localhost:3000/api/health
+        Write-Host "Health endpoint"
+        curl.exe http://localhost:3000/api/health
 
-        Write-Host "Test 2: Register endpoint"
-        curl -X POST http://localhost:3000/api/auth/register `
+        Write-Host "Register endpoint"
+        curl.exe -X POST http://localhost:3000/api/auth/register `
           -H "Content-Type: application/json" `
-          -d '{ "email":"test@example.com","password":"test123","firstName":"Test","lastName":"User","role":"Patient" }'
+          -d "{ `"email`":`"test@example.com`",`"password`":`"test123`",`"firstName`":`"Test`",`"lastName`":`"User`",`"role`":`"Patient`" }"
 
-        Write-Host "Test 3: Login endpoint"
-        curl -X POST http://localhost:3000/api/auth/login `
+        Write-Host "Login endpoint"
+        curl.exe -X POST http://localhost:3000/api/auth/login `
           -H "Content-Type: application/json" `
-          -d '{ "email":"test@example.com","password":"test123" }'
+          -d "{ `"email`":`"test@example.com`",`"password`":`"test123`" }"
 
         Write-Host "🎯 API tests completed"
 
@@ -105,5 +109,5 @@ jobs:
           $pid = Get-Content server.pid
           Stop-Process -Id $pid -Force
         }
-        Write-Host "✅ CI/CD Pipeline completed on Windows"
+        Write-Host "✅ CI/CD Pipeline completed successfully"
 
