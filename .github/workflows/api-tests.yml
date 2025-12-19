@@ -1,86 +1,109 @@
-name: Backend API Testing
+name: Backend API Testing (Windows)
+
 on: [push, pull_request]
 
 jobs:
   test-backend:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     timeout-minutes: 10
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
-    
+
     - name: Install dependencies
       run: npm ci
-    
+
     - name: Create test environment
+      shell: pwsh
       run: |
-        echo "DATABASE_URL=sqlite::memory:" > .env.test
-        echo "JWT_SECRET=test_jwt_secret_123" >> .env.test
-        echo "NODE_ENV=test" >> .env.test
-        echo "PORT=3000" >> .env.test
-    
+        "DATABASE_URL=sqlite::memory:" | Out-File .env.test -Encoding utf8
+        "JWT_SECRET=test_jwt_secret_123" | Out-File .env.test -Append -Encoding utf8
+        "NODE_ENV=test" | Out-File .env.test -Append -Encoding utf8
+        "PORT=3000" | Out-File .env.test -Append -Encoding utf8
+
     - name: Run database migrations
+      shell: pwsh
       run: |
-        npm run migrate:up || 
-        npm run db:migrate || 
-        npx sequelize-cli db:migrate || 
-        echo "No migrations found"
-    
+        npm run migrate:up `
+        -or npm run db:migrate `
+        -or npx sequelize-cli db:migrate `
+        -or Write-Host "No migrations found"
+
     - name: Start backend server
+      shell: pwsh
       run: |
-        npm start &
-        echo "SERVER_PID=$!" >> $GITHUB_ENV
-        sleep 15
-        echo "Testing server connection..."
-        curl -f http://localhost:3000/api/health || 
-        curl -f http://localhost:3000/health || 
-        curl -f http://localhost:3000 || 
-        echo "Server is starting..."
-    
+        Start-Process npm -ArgumentList "start" -PassThru | ForEach-Object {
+          $_.Id | Out-File server.pid
+        }
+
+        Start-Sleep -Seconds 15
+        Write-Host "Testing server connection..."
+
+        try {
+          Invoke-WebRequest http://localhost:3000/api/health -UseBasicParsing
+        } catch {
+          Write-Host "Server still starting..."
+        }
+
     - name: Run API tests with curl
+      shell: pwsh
       run: |
-        echo "Running API tests..."
-        echo "Test 1: Health endpoint"
-        curl -f http://localhost:3000/api/health && echo "✅ Health check passed" || echo "⚠ Health check skipped"
-        
-        echo "Test 2: Register endpoint"
-        curl -X POST http://localhost:3000/api/auth/register \
-          -H "Content-Type: application/json" \
-          -d '{"email":"test@example.com","password":"test123","firstName":"Test","lastName":"User","role":"Patient"}' \
-          -w "\nResponse Code: %{http_code}\n" && echo "✅ Register test passed" || echo "⚠ Register test issue"
-   
-        echo "Test 3: Login endpoint"
-        curl -X POST http://localhost:3000/api/auth/login \
-          -H "Content-Type: application/json" \
-          -d '{"email":"test@example.com","password":"test123"}' \
-          -w "\nResponse Code: %{http_code}\n" && echo "✅ Login test passed" || echo "⚠ Login test issue"
-        
-        echo "🎯 All basic API tests completed!"
-    
-    - name: Run Postman tests 
+        Write-Host "Running API tests..."
+
+        Write-Host "Test 1: Health endpoint"
+        curl http://localhost:3000/api/health
+
+        Write-Host "Test 2: Register endpoint"
+        curl -X POST http://localhost:3000/api/auth/register `
+          -H "Content-Type: application/json" `
+          -d '{ "email":"test@example.com","password":"test123","firstName":"Test","lastName":"User","role":"Patient" }'
+
+        Write-Host "Test 3: Login endpoint"
+        curl -X POST http://localhost:3000/api/auth/login `
+          -H "Content-Type: application/json" `
+          -d '{ "email":"test@example.com","password":"test123" }'
+
+        Write-Host "🎯 API tests completed"
+
+    - name: Run Postman tests
+      shell: pwsh
       run: |
         npm install -g newman
-        
-        # Postman test collection
-        echo '{
-          "info": { "name": "Clinic API Tests", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+
+        @'
+        {
+          "info": {
+            "name": "Clinic API Tests",
+            "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+          },
           "item": [
-            { "name": "Health Check", "request": { "method": "GET", "url": "http://localhost:3000/api/health" } },
-            { "name": "Register", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"test2@example.com\",\"password\":\"test123\",\"firstName\":\"Test\",\"lastName\":\"User\"}" }, "url": "http://localhost:3000/api/auth/register" } }
+            {
+              "name": "Health Check",
+              "request": {
+                "method": "GET",
+                "url": "http://localhost:3000/api/health"
+              }
+            }
           ]
-        }' > postman-tests.json
-        
-        newman run postman-tests.json --reporters cli || echo "Postman tests completed"
-    
+        }
+        '@ | Out-File postman-tests.json -Encoding utf8
+
+        newman run postman-tests.json --reporters cli
+
     - name: Stop server
       if: always()
+      shell: pwsh
       run: |
-        kill $SERVER_PID 2>/dev/null || true
-        echo "✅ CI/CD Pipeline completed!"
+        if (Test-Path server.pid) {
+          $pid = Get-Content server.pid
+          Stop-Process -Id $pid -Force
+        }
+        Write-Host "✅ CI/CD Pipeline completed on Windows"
+
