@@ -52,12 +52,11 @@ The frontend is built using **React Native** for mobile devices.
 
 ## Technologies Used
 - **Frontend:** React Native  
-- **Backend:** ASP.NET Core 7  
+- **Backend:** ASP.NET Core 8  
 - **Authentication:** JWT, ASP.NET Identity  
 - **Database:** SQLite (EF Core)  
 - **API Documentation:** Swagger/OpenAPI  
-- **Validation:** FluentValidation  
-- **Logging:** Serilog  
+- **Validation:** FluentValidation    
 - **CI/CD:** GitHub Actions  
 
 ---
