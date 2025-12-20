@@ -1,0 +1,130 @@
+.date-picker {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.date-picker-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background-color: var(--primary-white);
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.date-picker-input:hover {
+  border-color: var(--primary-blue);
+}
+
+.date-picker-input:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.placeholder {
+  color: var(--medium-gray);
+}
+
+.calendar-icon {
+  margin-left: 0.5rem;
+}
+
+.date-picker-calendar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 300px;
+  background: var(--primary-white);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 0.5rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--dark-gray);
+}
+
+.nav-button:hover {
+  background-color: var(--light-gray);
+}
+
+.month-year {
+  font-weight: 500;
+  color: var(--dark-gray);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  padding: 0.5rem;
+}
+
+.weekday {
+  text-align: center;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--medium-gray);
+  font-weight: 500;
+}
+
+.calendar-day {
+  text-align: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.calendar-day:hover:not(.empty) {
+  background-color: var(--light-blue);
+}
+
+.calendar-day.selected {
+  background-color: var(--primary-blue);
+  color: var(--primary-white);
+}
+
+.calendar-day.today:not(.selected) {
+  background-color: var(--light-green);
+  font-weight: bold;
+}
+
+.calendar-day.empty {
+  cursor: default;
+  color: var(--light-gray);
+}
+
+@media (max-width: 768px) {
+  .date-picker-calendar {
+    width: 280px;
+    left: auto;
+    right: 0;
+  }
+}

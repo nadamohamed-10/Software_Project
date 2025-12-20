@@ -1,0 +1,46 @@
+.touch-button {
+  /* Minimum touch target size for mobile */
+  min-height: 44px;
+  min-width: 44px;
+  
+  /* Ensure proper spacing */
+  margin: 4px;
+  
+  /* Smooth transitions */
+  transition: all 0.2s ease-in-out;
+  
+  /* Prevent text selection on double tap */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.touch-button:active {
+  transform: scale(0.98);
+}
+
+.touch-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Larger touch targets for mobile */
+@media (max-width: 768px) {
+  .touch-button {
+    min-height: 48px;
+    min-width: 48px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Extra large touch targets for accessibility */
+@media (max-width: 480px) {
+  .touch-button {
+    min-height: 52px;
+    min-width: 52px;
+    font-size: 1.2rem;
+  }
+}

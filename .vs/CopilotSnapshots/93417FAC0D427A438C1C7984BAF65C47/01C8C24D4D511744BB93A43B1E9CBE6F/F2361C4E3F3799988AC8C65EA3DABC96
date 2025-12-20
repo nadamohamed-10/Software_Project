@@ -1,0 +1,133 @@
+﻿.doctor-dashboard {
+  padding: 1rem 0;
+}
+
+.dashboard-header h1 {
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+  color: var(--medium-gray);
+  font-size: 1.1rem;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.stat-card {
+  background: var(--primary-white);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.stat-card h3 {
+  color: var(--primary-blue);
+  margin-bottom: 1rem;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-blue);
+  margin: 0.5rem 0;
+}
+
+.stat-label {
+  color: var(--medium-gray);
+  margin: 0;
+}
+
+.dashboard-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.appointment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.appointment-item:last-child {
+  border-bottom: none;
+}
+
+.appointment-details h4 {
+  margin-bottom: 0.25rem;
+  color: var(--dark-gray);
+}
+
+.appointment-details p {
+  margin: 0.25rem 0;
+  color: var(--medium-gray);
+  font-size: 0.9rem;
+}
+
+.appointment-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.appointment-status.scheduled {
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+}
+
+.appointment-status.confirmed {
+  background-color: var(--light-blue);
+  color: var(--primary-blue);
+}
+
+.appointment-status.checkedin {
+  background-color: var(--light-green);
+  color: var(--primary-green);
+}
+
+.record-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.record-item:last-child {
+  border-bottom: none;
+}
+
+.record-item h4 {
+  margin-bottom: 0.25rem;
+  color: var(--dark-gray);
+}
+
+.record-item p {
+  margin: 0.25rem 0;
+  color: var(--medium-gray);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .appointment-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .appointment-status {
+    margin-top: 0.5rem;
+  }
+}

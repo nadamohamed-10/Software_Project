@@ -1,0 +1,156 @@
+.image-uploader {
+  margin: 1rem 0;
+}
+
+.upload-area {
+  border: 2px dashed var(--border-color);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: var(--secondary-white);
+}
+
+.upload-area.dragging {
+  border-color: var(--primary-blue);
+  background-color: var(--light-blue);
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.upload-hint {
+  color: var(--medium-gray);
+  font-size: 0.9rem;
+  margin: 1rem 0;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-list {
+  margin-top: 1.5rem;
+}
+
+.file-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.file-list-header h3 {
+  margin: 0;
+  color: var(--dark-gray);
+}
+
+.file-items {
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.file-item:last-child {
+  border-bottom: none;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.file-icon {
+  font-size: 2rem;
+  margin-right: 1rem;
+}
+
+.file-details h4 {
+  margin: 0 0 0.25rem 0;
+  color: var(--dark-gray);
+}
+
+.file-meta {
+  margin: 0;
+  color: var(--medium-gray);
+  font-size: 0.9rem;
+}
+
+.file-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.upload-progress {
+  display: flex;
+  align-items: center;
+  width: 120px;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: var(--primary-blue);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--medium-gray);
+  min-width: 40px;
+}
+
+.status-success {
+  color: var(--primary-green);
+  font-weight: 500;
+}
+
+.status-error {
+  color: var(--error-red);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .file-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .file-info {
+    margin-bottom: 1rem;
+  }
+  
+  .file-actions {
+    align-self: flex-end;
+    margin-left: 0;
+  }
+  
+  .upload-area {
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,285 @@
+/* Prescription Creator Styles */
+.prescription-creator {
+  padding: 1rem;
+  background-color: var(--secondary-white);
+  min-height: calc(100vh - 60px);
+}
+
+.prescription-header {
+  background: var(--primary-white);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prescription-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: var(--dark-gray);
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Three-panel layout */
+.prescription-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 1.5rem;
+  height: calc(100vh - 200px);
+}
+
+/* Drug Library Panel */
+.drug-library-panel .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.drug-library-panel .card-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.search-box {
+  margin-bottom: 1rem;
+}
+
+.drug-section {
+  margin-bottom: 1.5rem;
+}
+
+.drug-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-gray);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-blue);
+}
+
+.drug-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.drug-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--secondary-white);
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  cursor: move;
+  transition: all 0.2s;
+}
+
+.drug-item:hover {
+  background: var(--light-blue);
+  border-color: var(--primary-blue);
+  transform: translateX(4px);
+}
+
+.drug-add-icon {
+  color: var(--primary-blue);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.add-custom-drug {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.add-custom-drug .form-control {
+  flex: 1;
+}
+
+/* Prescription List Panel */
+.prescription-list-panel .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.prescription-drop-zone {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--medium-gray);
+}
+
+.empty-state p {
+  margin: 0.5rem 0;
+}
+
+.prescription-drugs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.prescription-drug-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  background: var(--secondary-white);
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.prescription-drug-item:hover {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 123, 255, 0.15);
+}
+
+.prescription-drug-item.selected {
+  background: var(--light-blue);
+  border-color: var(--primary-blue);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 123, 255, 0.25);
+}
+
+.drug-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: var(--dark-gray);
+}
+
+.drug-info p {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+  color: var(--medium-gray);
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--error-red);
+  cursor: pointer;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+}
+
+.remove-btn:hover {
+  background: var(--error-red);
+  color: var(--primary-white);
+}
+
+/* Drug Details Panel */
+.drug-details-panel .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.drug-details-panel .card-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.drug-details-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Print Styles */
+@media print {
+  .prescription-header,
+  .drug-library-panel,
+  .drug-details-panel {
+    display: none;
+  }
+
+  .prescription-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .prescription-drug-item {
+    page-break-inside: avoid;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .prescription-layout {
+    grid-template-columns: 1fr 1fr;
+    height: auto;
+  }
+
+  .drug-details-panel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .prescription-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    margin-top: 1rem;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .header-actions .btn {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .prescription-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .prescription-layout > div {
+    height: auto;
+    min-height: 300px;
+  }
+
+  .drug-library-panel,
+  .prescription-list-panel,
+  .drug-details-panel {
+    grid-column: 1;
+  }
+}
+
+/* Drag and Drop Visual Feedback */
+.prescription-drop-zone.drag-over {
+  background: var(--light-blue);
+  border: 2px dashed var(--primary-blue);
+}
+
+.drug-item.dragging {
+  opacity: 0.5;
+}

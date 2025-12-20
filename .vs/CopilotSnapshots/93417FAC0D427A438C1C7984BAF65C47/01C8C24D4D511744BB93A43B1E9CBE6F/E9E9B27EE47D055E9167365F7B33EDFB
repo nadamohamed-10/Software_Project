@@ -1,0 +1,132 @@
+﻿import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import './App.css';
+
+// Layout components
+import MainLayout from './layouts/MainLayout';
+import AuthLayout from './layouts/AuthLayout';
+
+// Page components
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import PatientDashboard from './pages/patient/Dashboard';
+import DoctorDashboard from './pages/doctor/Dashboard';
+import Profile from './pages/Profile';
+import Appointments from './pages/Appointments';
+import MedicalRecords from './pages/MedicalRecords';
+import Prescriptions from './pages/Prescriptions';
+import Schedule from './pages/doctor/Schedule';
+
+// Context providers
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { NotificationProvider } from './contexts/NotificationContext';
+
+// Protected Route Component
+const ProtectedRoute: React.FC<{ children: React.ReactElement, allowedRoles?: string[] }> = ({ 
+  children, 
+  allowedRoles 
+}) => {
+  const { isAuthenticated, user } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+    // Redirect to appropriate dashboard if user doesn't have access
+    return <Navigate to={user.role === 'Doctor' ? '/doctor/dashboard' : '/patient/dashboard'} replace />;
+  }
+
+  return children;
+};
+
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <NotificationProvider>
+        <Router>
+          <Routes>
+            {/* Public routes - Auth pages */}
+            <Route element={<AuthLayout />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Route>
+
+            {/* Protected routes */}
+            <Route element={<MainLayout />}>
+              {/* Redirect root to login or appropriate dashboard */}
+              <Route path="/" element={<Navigate to="/login" replace />} />
+              
+              {/* Patient routes */}
+              <Route 
+                path="/patient/dashboard" 
+                element={
+                  <ProtectedRoute allowedRoles={['Patient']}>
+                    <PatientDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* Doctor routes */}
+              <Route 
+                path="/doctor/dashboard" 
+                element={
+                  <ProtectedRoute allowedRoles={['Doctor']}>
+                    <DoctorDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/doctor/schedule" 
+                element={
+                  <ProtectedRoute allowedRoles={['Doctor']}>
+                    <Schedule />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* Shared routes */}
+              <Route 
+                path="/profile" 
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/appointments" 
+                element={
+                  <ProtectedRoute>
+                    <Appointments />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/medical-records" 
+                element={
+                  <ProtectedRoute>
+                    <MedicalRecords />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/prescriptions" 
+                element={
+                  <ProtectedRoute>
+                    <Prescriptions />
+                  </ProtectedRoute>
+                } 
+              />
+            </Route>
+
+            {/* Catch all - redirect to login */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </Router>
+      </NotificationProvider>
+    </AuthProvider>
+  );
+};
+
+export default App;

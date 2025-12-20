@@ -1,0 +1,48 @@
+.lazy-image-container {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--light-gray);
+  border-radius: 0.25rem;
+}
+
+.lazy-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--light-gray);
+}
+
+.lazy-image-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--light-gray);
+  color: var(--medium-gray);
+  font-size: 2rem;
+}
+
+.lazy-image {
+  transition: opacity 0.3s ease;
+  display: block;
+}
+
+.lazy-image.loading {
+  opacity: 0.7;
+}
+
+.lazy-image.loaded {
+  opacity: 1;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid var(--primary-blue);
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}

@@ -1,0 +1,270 @@
+﻿import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNotifications } from '../../contexts/NotificationContext';
+import apiService, { Appointment } from '../../services/api';
+import '../../styles/pages/DoctorDashboard.css';
+
+const DoctorDashboard: React.FC = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { addNotification } = useNotifications();
+  
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [activeAppointment, setActiveAppointment] = useState<Appointment | null>(null);
+
+  useEffect(() => {
+    loadAppointments();
+  }, []);
+
+  const loadAppointments = async () => {
+    setLoading(true);
+    try {
+      const data = await apiService.getAppointments();
+      setAppointments(data);
+      
+      // Find active appointment (InProgress status)
+      const active = data.find(apt => apt.status === 'InProgress');
+      if (active) {
+        setActiveAppointment(active);
+      }
+    } catch (error) {
+      addNotification({
+        type: 'alert',
+        title: 'Error',
+        message: 'Failed to load appointments'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startConsultation = async (appointment: Appointment) => {
+    try {
+      // Update appointment status to InProgress
+      await apiService.updateAppointment(appointment.id, { status: 'InProgress' });
+      
+      setActiveAppointment(appointment);
+      
+      addNotification({
+        type: 'appointment',
+        title: 'Consultation Started',
+        message: `Consultation started for ${appointment.patientId}`
+      });
+
+      // Navigate to consultation page
+      navigate(`/doctor/consultation/${appointment.patientId}/${appointment.id}`);
+    } catch (error) {
+      addNotification({
+        type: 'alert',
+        title: 'Error',
+        message: 'Failed to start consultation'
+      });
+    }
+  };
+
+  const viewPatientDetails = (patientId: string) => {
+    navigate(`/doctor/patient/${patientId}`);
+  };
+
+  const filteredAppointments = appointments.filter(apt => {
+    const matchesSearch = apt.patientId.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = selectedStatus === 'all' || apt.status === selectedStatus;
+    return matchesSearch && matchesStatus;
+  });
+
+  const todayAppointments = filteredAppointments.filter(apt => {
+    const today = new Date().toDateString();
+    return new Date(apt.date).toDateString() === today;
+  });
+
+  const completedToday = todayAppointments.filter(apt => apt.status === 'Completed').length;
+  const upcomingToday = todayAppointments.filter(apt => 
+    ['Scheduled', 'Confirmed', 'CheckedIn'].includes(apt.status)
+  ).length;
+
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'Scheduled':
+        return 'scheduled';
+      case 'Confirmed':
+        return 'confirmed';
+      case 'CheckedIn':
+        return 'checkedin';
+      case 'InProgress':
+        return 'inprogress';
+      case 'Completed':
+        return 'completed';
+      case 'Cancelled':
+        return 'cancelled';
+      default:
+        return '';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="doctor-dashboard">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="doctor-dashboard">
+      <div className="dashboard-header">
+        <div>
+          <h1>Doctor Dashboard</h1>
+          <p>Welcome back, Dr. {user?.firstName} {user?.lastName}</p>
+        </div>
+        <div className="header-actions">
+          <button className="btn btn-outline" onClick={() => navigate('/doctor/schedule')}>
+            Manage Schedule
+          </button>
+        </div>
+      </div>
+      
+      {/* Active Patient Highlight */}
+      {activeAppointment && (
+        <div className="active-patient-card">
+          <div className="active-label">
+            <span className="pulse-indicator"></span>
+            Active Consultation
+          </div>
+          <div className="active-patient-info">
+            <h3>Patient: {activeAppointment.patientId}</h3>
+            <p>Started: {new Date().toLocaleTimeString()}</p>
+          </div>
+          <button 
+            className="btn btn-primary"
+            onClick={() => navigate(`/doctor/consultation/${activeAppointment.patientId}/${activeAppointment.id}`)}
+          >
+            Continue Consultation
+          </button>
+        </div>
+      )}
+
+      {/* Statistics */}
+      <div className="dashboard-stats">
+        <div className="stat-card">
+          <h3>Today's Appointments</h3>
+          <p className="stat-number">{todayAppointments.length}</p>
+          <p className="stat-label">{completedToday} Completed, {upcomingToday} Upcoming</p>
+        </div>
+        
+        <div className="stat-card">
+          <h3>Checked In</h3>
+          <p className="stat-number">
+            {todayAppointments.filter(apt => apt.status === 'CheckedIn').length}
+          </p>
+          <p className="stat-label">Waiting for consultation</p>
+        </div>
+        
+        <div className="stat-card">
+          <h3>Completed Today</h3>
+          <p className="stat-number">{completedToday}</p>
+          <p className="stat-label">Total consultations</p>
+        </div>
+      </div>
+      
+      {/* Patient Search and Filter */}
+      <div className="search-filter-section">
+        <div className="search-box">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search patients..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="filter-box">
+          <select
+            className="form-control"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+          >
+            <option value="all">All Status</option>
+            <option value="Scheduled">Scheduled</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="CheckedIn">Checked In</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Appointments List */}
+      <div className="dashboard-sections">
+        <div className="card">
+          <div className="card-header">
+            <h2>Today's Schedule</h2>
+          </div>
+          <div className="card-body">
+            {todayAppointments.length === 0 ? (
+              <div className="empty-state">
+                <p>No appointments scheduled for today</p>
+              </div>
+            ) : (
+              <div className="appointments-list">
+                {todayAppointments.map((appointment) => (
+                  <div key={appointment.id} className="appointment-item">
+                    <div className="appointment-time">
+                      <span className="time">{appointment.time}</span>
+                    </div>
+                    <div className="appointment-details">
+                      <h4>Patient ID: {appointment.patientId}</h4>
+                      <p>{appointment.reason || 'General Consultation'}</p>
+                      <span className={`appointment-status ${getStatusClass(appointment.status)}`}>
+                        {appointment.status}
+                      </span>
+                    </div>
+                    <div className="appointment-actions">
+                      {appointment.status === 'CheckedIn' && (
+                        <button 
+                          className="btn btn-primary"
+                          onClick={() => startConsultation(appointment)}
+                        >
+                          Start Consultation
+                        </button>
+                      )}
+                      {appointment.status === 'InProgress' && (
+                        <button 
+                          className="btn btn-primary"
+                          onClick={() => navigate(`/doctor/consultation/${appointment.patientId}/${appointment.id}`)}
+                        >
+                          Continue
+                        </button>
+                      )}
+                      {appointment.status === 'Completed' && (
+                        <button 
+                          className="btn btn-outline"
+                          onClick={() => viewPatientDetails(appointment.patientId)}
+                        >
+                          View Details
+                        </button>
+                      )}
+                      {['Scheduled', 'Confirmed'].includes(appointment.status) && (
+                        <button 
+                          className="btn btn-outline"
+                          onClick={() => viewPatientDetails(appointment.patientId)}
+                        >
+                          View Patient
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DoctorDashboard;

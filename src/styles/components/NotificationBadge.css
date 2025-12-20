@@ -1,0 +1,26 @@
+.notification-badge {
+  position: relative;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.bell-icon {
+  font-size: 1.2rem;
+  color: var(--dark-gray);
+}
+
+.badge-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--error-red);
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(25%, -25%);
+}
