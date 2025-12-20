@@ -1,15 +1,15 @@
-name: Backend CI - Clinic Information System (Windows)
+name: Backend CI - Clinic Information System
 
 on:
   push:
     branches: [ "master" ]
   pull_request:
-    branches: [ "master"]
+    branches: [ "master" ]
 
 jobs:
   backend-tests:
-    name: Build & Test Backend on Windows
-    runs-on: windows-latest
+    name: Build & Test Backend
+    runs-on: ubuntu-latest
 
     services:
       sqlserver:
@@ -19,6 +19,8 @@ jobs:
           ACCEPT_EULA: "Y"
         ports:
           - 1433:1433
+        options: >-
+          --health-cmd "exit 0"
 
     steps:
     - name: Checkout Repository
@@ -40,10 +42,9 @@ jobs:
       env:
         ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=ClinicSystemTestDb;User Id=sa;Password=YourStrong@Password123;Encrypt=false"
 
-    - name: Install EF Core Tools
-      run: dotnet tool install --global dotnet-ef
-
-    - name: Apply EF Core Migrations
-      run: dotnet ef database update --project backend/ClinicSystem.Data --startup-project backend/ClinicSystem.API
+    - name: Validate EF Core Migrations
+      run: |
+        dotnet tool install --global dotnet-ef
+        dotnet ef database update --project backend/ClinicSystem.Data --startup-project backend/ClinicSystem.API
       env:
         ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=ClinicSystemTestDb;User Id=sa;Password=YourStrong@Password123;Encrypt=false"
