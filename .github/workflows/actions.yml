@@ -1,0 +1,49 @@
+name: Backend CI - Clinic Information System (Windows)
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master"]
+
+jobs:
+  backend-tests:
+    name: Build & Test Backend on Windows
+    runs-on: windows-latest
+
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          SA_PASSWORD: "YourStrong@Password123"
+          ACCEPT_EULA: "Y"
+        ports:
+          - 1433:1433
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8 SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore Dependencies
+      run: dotnet restore backend/ClinicSystem.sln
+
+    - name: Build Backend
+      run: dotnet build backend/ClinicSystem.sln --configuration Release --no-restore
+
+    - name: Run Unit & Integration Tests
+      run: dotnet test backend/ClinicSystem.Tests/ClinicSystem.Tests.csproj --configuration Release --no-build --verbosity normal
+      env:
+        ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=ClinicSystemTestDb;User Id=sa;Password=YourStrong@Password123;Encrypt=false"
+
+    - name: Install EF Core Tools
+      run: dotnet tool install --global dotnet-ef
+
+    - name: Apply EF Core Migrations
+      run: dotnet ef database update --project backend/ClinicSystem.Data --startup-project backend/ClinicSystem.API
+      env:
+        ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=ClinicSystemTestDb;User Id=sa;Password=YourStrong@Password123;Encrypt=false"
